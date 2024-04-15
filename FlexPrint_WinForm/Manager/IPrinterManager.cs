@@ -1,14 +1,11 @@
 ﻿using FlexPrint_Console.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FlexPrint_WinForm.Model;
 
 namespace FlexPrint_Console.Manager
 {
 	public interface IPrinterManager
 	{
+		
 		/// <summary>
 		/// Метод, який завантажує дані про принтери з бази даних.
 		/// </summary>
@@ -38,38 +35,46 @@ namespace FlexPrint_Console.Manager
 		/// <summary>
 		/// Метод для сортування принтерів за ціною в порядку зростання.
 		/// </summary>
-		void SortPrintersByPrice();
+		LinkedList<Printer> SortPrintersByPrice();
+
+
+		/// <summary>
+		/// Метод для получення всіч принтерів
+		/// </summary>
+		LinkedList<Printer> GetPrinters();
+
+
 
 		/// <summary>
 		/// Метод для отримання списку лазерних принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список лазерних принтерів.</returns>
-		List<LaserPrinter> GetLaserPrinters();
+		LinkedList<LaserPrinter> GetLaserPrinters();
 
 		/// <summary>
 		/// Метод для отримання списку струменевих принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список струменевих принтерів.</returns>
-		List<InkjetPrinter> GetInkjetPrinters();
+		LinkedList<InkjetPrinter> GetInkjetPrinters();
 
 		/// <summary>
 		/// Метод для отримання списку принтерів виробника за його назвою.
 		/// </summary>
 		/// <param name="manufacturer">Назва виробника принтерів.</param>
 		/// <returns>Список принтерів виробника.</returns>
-		List<Printer> GetPrintersByManufacturer(string manufacturer);
+		LinkedList<Printer> GetPrintersByManufacturer(string manufacturer);
 
 		/// <summary>
 		/// Метод для отримання списку принтерів для дому.
 		/// </summary>
 		/// <returns>Список принтерів для дому.</returns>
-		List<Printer> GetHomePrinters();
+		LinkedList<Printer> GetHomePrinters();
 
 		/// <summary>
 		/// Метод для отримання списку принтерів для офісу.
 		/// </summary>
 		/// <returns>Список принтерів для офісу.</returns>
-		List<Printer> GetOfficePrinters();
+		LinkedList<Printer> GetOfficePrinters();
 	}
 
 

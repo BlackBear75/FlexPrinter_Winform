@@ -1,23 +1,19 @@
 ﻿using FlexPrint_Console.DB;
 using FlexPrint_Console.Enum;
 using FlexPrint_Console.Model;
+using FlexPrint_WinForm.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlexPrint_Console.Manager
 {
 	public class PrinterManager : IPrinterManager
-
 	{
-		private List<LaserPrinter> laserPrintersList = new List<LaserPrinter>();
-		private List<InkjetPrinter> inkjetPrintersList = new List<InkjetPrinter>();
+		private LinkedList<LaserPrinter> laserPrintersList = new LinkedList<LaserPrinter>();
+		private LinkedList<InkjetPrinter> inkjetPrintersList = new LinkedList<InkjetPrinter>();
 
 		private IConfiguration _configuration;
 
@@ -26,70 +22,56 @@ namespace FlexPrint_Console.Manager
 			_configuration = configuration;
 			LoadDataFromDatabase();
 		}
+		public LinkedList<Printer> GetPrinters()
+		{
+			var printers = new LinkedList<Printer>();
+			foreach (var printer in inkjetPrintersList)
+			{
+
+				printers.AddLast(printer);
+				
+			}
+			foreach (var printer in laserPrintersList)
+			{
+				printers.AddLast(printer);
+			}
+
+			return printers;
+			
+		}
 		public void LoadDataFromDatabase()
 		{
 			using (var context = new PrinterDbContext(_configuration))
 			{
-				var laserPrinters = context.LaserPrinters.ToList();
-				var inkjetPrinters = context.InkjetPrinters.ToList();
-
-				if (laserPrinters.Any())
-				{
-					foreach (var printer in laserPrinters)
-					{
-						laserPrintersList.Add(printer);
-					}
-				}
-				else
-				{
-					Console.WriteLine("Dont have LaserPrinter in base");
-				}
-
-				if (inkjetPrinters.Any())
-				{
-					foreach (var printer in inkjetPrinters)
-					{
-						inkjetPrintersList.Add(printer);
-					}
-				}
-				else
-				{
-					Console.WriteLine("Dont have InkjetPrinter in base");
-				}
+				laserPrintersList = new LinkedList<LaserPrinter>(context.LaserPrinters.ToList());
+				inkjetPrintersList = new LinkedList<InkjetPrinter>(context.InkjetPrinters.ToList());
 			}
 		}
-
 
 		public void AddPrinter<T>(T printer) where T : Printer
 		{
 			try
 			{
-
-				if (printer is LaserPrinter)
+				using (var context = new PrinterDbContext(_configuration))
 				{
-					printer.ProductCode = GenerateProductCode();
-					laserPrintersList.Add((LaserPrinter)(object)printer);
-					using (var context = new PrinterDbContext(_configuration))
+					if (printer is LaserPrinter)
 					{
+						printer.ProductCode = GenerateProductCode();
+						laserPrintersList.AddLast((LaserPrinter)(object)printer);
 						context.LaserPrinters.Add((LaserPrinter)(object)printer);
-						context.SaveChanges();
 					}
-				}
-				else if (printer is InkjetPrinter)
-				{
-					printer.ProductCode = GenerateProductCode();
-					inkjetPrintersList.Add((InkjetPrinter)(object)printer);
-					using (var context = new PrinterDbContext(_configuration))
+					else if (printer is InkjetPrinter)
 					{
+						printer.ProductCode = GenerateProductCode();
+						inkjetPrintersList.AddLast((InkjetPrinter)(object)printer);
 						context.InkjetPrinters.Add((InkjetPrinter)(object)printer);
-						context.SaveChanges();
 					}
+					context.SaveChanges();
 				}
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine($"Error with Add Printer: {ex.Message}");
-				
 			}
 		}
 
@@ -116,43 +98,31 @@ namespace FlexPrint_Console.Manager
 				{
 					if (newPrinterData is LaserPrinter)
 					{
-						var index = laserPrintersList.FindIndex(p => p.ProductCode == productCode);
-						if (index != -1)
+						var existingLaserPrinter = laserPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+						if (existingLaserPrinter != null)
 						{
-							laserPrintersList[index] = (LaserPrinter)(object)newPrinterData;
-							var existingLaserPrinter = context.LaserPrinters.FirstOrDefault(p => p.ProductCode == productCode);
-							if (existingLaserPrinter != null)
-							{
-								existingLaserPrinter.Model = newPrinterData.Model;
-								existingLaserPrinter.Manufacturer = newPrinterData.Manufacturer;
-								existingLaserPrinter.Price = newPrinterData.Price;
-								existingLaserPrinter.Purpose = newPrinterData.Purpose;
-								existingLaserPrinter.PrinterSize = newPrinterData.PrinterSize;
-								existingLaserPrinter.LaserType = ((LaserPrinter)(object)newPrinterData).LaserType; // Оновлення поля LaserType
-
-								context.SaveChanges();
-							}
+							existingLaserPrinter.Model = newPrinterData.Model;
+							existingLaserPrinter.Manufacturer = newPrinterData.Manufacturer;
+							existingLaserPrinter.Price = newPrinterData.Price;
+							existingLaserPrinter.Purpose = newPrinterData.Purpose;
+							existingLaserPrinter.PrinterSize = newPrinterData.PrinterSize;
+							existingLaserPrinter.LaserType = ((LaserPrinter)(object)newPrinterData).LaserType; // Оновлення поля LaserType
 						}
 					}
 					else if (newPrinterData is InkjetPrinter)
 					{
-						var index = inkjetPrintersList.FindIndex(p => p.ProductCode == productCode);
-						if (index != -1)
+						var existingInkjetPrinter = inkjetPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+						if (existingInkjetPrinter != null)
 						{
-							inkjetPrintersList[index] = (InkjetPrinter)(object)newPrinterData;
-							var existingInkjetPrinter = context.InkjetPrinters.FirstOrDefault(p => p.ProductCode == productCode);
-							if (existingInkjetPrinter != null)
-							{
-								existingInkjetPrinter.Model = newPrinterData.Model;
-								existingInkjetPrinter.Manufacturer = newPrinterData.Manufacturer;
-								existingInkjetPrinter.Price = newPrinterData.Price;
-								existingInkjetPrinter.Purpose = newPrinterData.Purpose;
-								existingInkjetPrinter.PrinterSize = newPrinterData.PrinterSize;
-								existingInkjetPrinter.Duplex = ((InkjetPrinter)(object)newPrinterData).Duplex;
-								context.SaveChanges();
-							}
+							existingInkjetPrinter.Model = newPrinterData.Model;
+							existingInkjetPrinter.Manufacturer = newPrinterData.Manufacturer;
+							existingInkjetPrinter.Price = newPrinterData.Price;
+							existingInkjetPrinter.Purpose = newPrinterData.Purpose;
+							existingInkjetPrinter.PrinterSize = newPrinterData.PrinterSize;
+							existingInkjetPrinter.Duplex = ((InkjetPrinter)(object)newPrinterData).Duplex;
 						}
 					}
+					context.SaveChanges();
 				}
 			}
 			catch (Exception ex)
@@ -163,100 +133,121 @@ namespace FlexPrint_Console.Manager
 
 		public void RemovePrinter(string productCode)
 		{
-			
-			var laserPrinterToRemove = laserPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
-			if (laserPrinterToRemove != null)
+			using (var context = new PrinterDbContext(_configuration))
 			{
-				
+				var laserPrinterToRemove = laserPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+				if (laserPrinterToRemove != null)
+				{
 					laserPrintersList.Remove(laserPrinterToRemove);
-				using (var context = new PrinterDbContext(_configuration))
-				{
 					context.LaserPrinters.Remove(laserPrinterToRemove);
-					context.SaveChanges();
 				}
-			}
-			var inkjetPrinterToRemove = inkjetPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
-			if (inkjetPrinterToRemove != null)
-			{
-				inkjetPrintersList.Remove(inkjetPrinterToRemove);
-				using (var context = new PrinterDbContext(_configuration))
+
+				var inkjetPrinterToRemove = inkjetPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+				if (inkjetPrinterToRemove != null)
 				{
+					inkjetPrintersList.Remove(inkjetPrinterToRemove);
 					context.InkjetPrinters.Remove(inkjetPrinterToRemove);
-					context.SaveChanges();
 				}
-			}
-			else
-			{
-				Console.WriteLine("A printer with the same code was not found");
-			}
 
+				context.SaveChanges();
+			}
 		}
 
-		public void SortPrintersByPrice()
+		public LinkedList<Printer> SortPrintersByPrice()
 		{
+			var allPrinters = new LinkedList<Printer>();
 
-			List<Printer> allPrinters = new List<Printer>();
-			allPrinters.AddRange(laserPrintersList);
-			allPrinters.AddRange(inkjetPrintersList);
-
-			allPrinters.Sort((x, y) => x.Price.CompareTo(y.Price));
-
-			Console.WriteLine("Printers sorted by price:");
-			foreach (var printer in allPrinters)
+			foreach (var printer in laserPrintersList)
 			{
-				Console.WriteLine($"Model: {printer.Model}, Price: {printer.Price}");
+				allPrinters.AddLast(printer);
 			}
+
+			foreach (var printer in inkjetPrintersList)
+			{
+				allPrinters.AddLast(printer);
+			}
+
+			var sortedPrinters = new LinkedList<Printer>(allPrinters.OrderBy(p => p.Price));
+
+			return sortedPrinters;
 		}
 
-		public List<LaserPrinter> GetLaserPrinters()
+		public LinkedList<LaserPrinter> GetLaserPrinters()
 		{
 			return laserPrintersList;
 		}
 
-		public List<InkjetPrinter> GetInkjetPrinters()
+		public LinkedList<InkjetPrinter> GetInkjetPrinters()
 		{
 			return inkjetPrintersList;
 		}
 
-		public List<Printer> GetPrintersByManufacturer(string manufacturer)
+		public LinkedList<Printer> GetPrintersByManufacturer(string manufacturer)
 		{
-			var printersByManufacturer = new List<Printer>();
-			printersByManufacturer.AddRange(laserPrintersList.Where(p => p.Manufacturer == manufacturer));
-			printersByManufacturer.AddRange(inkjetPrintersList.Where(p => p.Manufacturer == manufacturer));
-			if(printersByManufacturer.Count==0)
+			var printersByManufacturer = new LinkedList<Printer>();
+			foreach (var printer in laserPrintersList)
 			{
-				Console.WriteLine("No printers with this manufacturer were found") ;
+				if (printer.Manufacturer == manufacturer)
+				{
+					printersByManufacturer.AddLast(printer);
+				}
 			}
+			foreach (var printer in inkjetPrintersList)
+			{
+				if (printer.Manufacturer == manufacturer)
+				{
+					printersByManufacturer.AddLast(printer);
+				}
+			}
+			
 			return printersByManufacturer;
 		}
 
-		public List<Printer> GetHomePrinters()
+		public LinkedList<Printer> GetHomePrinters()
 		{
-			var homePrinters = new List<Printer>();
-			homePrinters.AddRange(inkjetPrintersList.Where(p => p.Purpose == PrinterPurpose.Home));
-			homePrinters.AddRange(laserPrintersList.Where(p => p.Purpose == PrinterPurpose.Home));
-			if (homePrinters.Count == 0)
+			var homePrinters = new LinkedList<Printer>();
+			foreach (var printer in inkjetPrintersList)
 			{
-				Console.WriteLine("No home printers found");
+				if (printer.Purpose == PrinterPurpose.Home)
+				{
+					homePrinters.AddLast(printer);
+				}
 			}
+			foreach (var printer in laserPrintersList)
+			{
+				if (printer.Purpose == PrinterPurpose.Home)
+				{
+					homePrinters.AddLast(printer);
+				}
+			}
+			
 			return homePrinters;
 		}
 
-		public List<Printer> GetOfficePrinters()
+		public LinkedList<Printer> GetOfficePrinters()
 		{
-			var officePrinters = new List<Printer>();
-			officePrinters.AddRange(inkjetPrintersList.Where(p => p.Purpose == PrinterPurpose.Office));
-			officePrinters.AddRange(laserPrintersList.Where(p => p.Purpose == PrinterPurpose.Office));
+			var officePrinters = new LinkedList<Printer>();
+			foreach (var printer in inkjetPrintersList)
+			{
+				if (printer.Purpose == PrinterPurpose.Office)
+				{
+					officePrinters.AddLast(printer);
+				}
+			}
+			foreach (var printer in laserPrintersList)
+			{
+				if (printer.Purpose == PrinterPurpose.Office)
+				{
+					officePrinters.AddLast(printer);
+				}
+			}
 			if (officePrinters.Count == 0)
 			{
 				Console.WriteLine("No office printers found");
 			}
-	
 			return officePrinters;
 		}
-		
-	
-	}
 
 		
+	}
 }
