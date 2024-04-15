@@ -42,6 +42,10 @@
 			Purpose = new ComboBox();
 			PrinterSize = new ComboBox();
 			PrinterSizeT = new TextBox();
+			LaserTypeT = new TextBox();
+			LaserType = new ComboBox();
+			InkjectTypeT = new TextBox();
+			InkjectType = new ComboBox();
 			SuspendLayout();
 			// 
 			// Cancel_button
@@ -52,6 +56,7 @@
 			Cancel_button.TabIndex = 0;
 			Cancel_button.Text = "Cancel";
 			Cancel_button.UseVisualStyleBackColor = true;
+			Cancel_button.Click += Cancel_button_Click;
 			// 
 			// AddPrinter
 			// 
@@ -61,6 +66,7 @@
 			AddPrinter.TabIndex = 1;
 			AddPrinter.Text = "Add Printer";
 			AddPrinter.UseVisualStyleBackColor = true;
+			AddPrinter.Click += AddPrinter_Click;
 			// 
 			// EnterModelT
 			// 
@@ -93,11 +99,12 @@
 			// 
 			TypePrinter.DropDownStyle = ComboBoxStyle.DropDownList;
 			TypePrinter.FormattingEnabled = true;
-			TypePrinter.Items.AddRange(new object[] { "Laser","Inkject" });
+			TypePrinter.Items.AddRange(new object[] { "Laser", "Inkject" });
 			TypePrinter.Location = new Point(204, 71);
 			TypePrinter.Name = "TypePrinter";
 			TypePrinter.Size = new Size(151, 28);
 			TypePrinter.TabIndex = 5;
+			TypePrinter.SelectedIndexChanged += TypePrinter_SelectedIndexChanged;
 			// 
 			// PriceT
 			// 
@@ -146,6 +153,7 @@
 			// Purpose
 			// 
 			Purpose.FormattingEnabled = true;
+			Purpose.Items.AddRange(new object[] { "Home", "Office", "Other" });
 			Purpose.Location = new Point(204, 187);
 			Purpose.Name = "Purpose";
 			Purpose.Size = new Size(151, 28);
@@ -154,6 +162,7 @@
 			// PrinterSize
 			// 
 			PrinterSize.FormattingEnabled = true;
+			PrinterSize.Items.AddRange(new object[] { "A4", "A5" });
 			PrinterSize.Location = new Point(204, 231);
 			PrinterSize.Name = "PrinterSize";
 			PrinterSize.Size = new Size(151, 28);
@@ -169,12 +178,59 @@
 			PrinterSizeT.TabIndex = 13;
 			PrinterSizeT.Text = "PrinterSize";
 			// 
+			// LaserTypeT
+			// 
+			LaserTypeT.BackColor = SystemColors.ActiveCaption;
+			LaserTypeT.BorderStyle = BorderStyle.None;
+			LaserTypeT.Location = new Point(113, 270);
+			LaserTypeT.Name = "LaserTypeT";
+			LaserTypeT.Size = new Size(85, 20);
+			LaserTypeT.TabIndex = 14;
+			LaserTypeT.Text = "LaserType";
+			LaserTypeT.Visible = false;
+			// 
+			// LaserType
+			// 
+			LaserType.DropDownStyle = ComboBoxStyle.DropDownList;
+			LaserType.FormattingEnabled = true;
+			LaserType.Items.AddRange(new object[] { "SolidState", "Gas", "Dye", "Fiber" });
+			LaserType.Location = new Point(204, 267);
+			LaserType.Name = "LaserType";
+			LaserType.Size = new Size(151, 28);
+			LaserType.TabIndex = 15;
+			LaserType.Visible = false;
+			// 
+			// InkjectTypeT
+			// 
+			InkjectTypeT.BackColor = SystemColors.ActiveCaption;
+			InkjectTypeT.BorderStyle = BorderStyle.None;
+			InkjectTypeT.Location = new Point(105, 275);
+			InkjectTypeT.Name = "InkjectTypeT";
+			InkjectTypeT.Size = new Size(93, 20);
+			InkjectTypeT.TabIndex = 16;
+			InkjectTypeT.Text = "InkjectType";
+			InkjectTypeT.Visible = false;
+			// 
+			// InkjectType
+			// 
+			InkjectType.FormattingEnabled = true;
+			InkjectType.Items.AddRange(new object[] { "Yes", "No" });
+			InkjectType.Location = new Point(204, 267);
+			InkjectType.Name = "InkjectType";
+			InkjectType.Size = new Size(151, 28);
+			InkjectType.TabIndex = 17;
+			InkjectType.Visible = false;
+			// 
 			// AddPrinterForm
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ActiveCaption;
 			ClientSize = new Size(506, 391);
+			Controls.Add(InkjectType);
+			Controls.Add(InkjectTypeT);
+			Controls.Add(LaserType);
+			Controls.Add(LaserTypeT);
 			Controls.Add(PrinterSizeT);
 			Controls.Add(PrinterSize);
 			Controls.Add(Purpose);
@@ -211,5 +267,9 @@
 		private ComboBox Purpose;
 		private ComboBox PrinterSize;
 		private TextBox PrinterSizeT;
+		private TextBox LaserTypeT;
+		private ComboBox LaserType;
+		private TextBox InkjectTypeT;
+		private ComboBox InkjectType;
 	}
 }

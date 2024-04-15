@@ -1,4 +1,5 @@
 ﻿using FlexPrint_Console.Enum;
+using FlexPrint_Console.Model;
 using FlexPrint_WinForm.Model;
 using System;
 using System.Collections.Generic;
@@ -19,20 +20,93 @@ namespace FlexPrint_WinForm
 			InitializeComponent();
 		}
 
-		// Метод, що повертає дані про новий принтер
+		private void TypePrinter_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Отримуємо вибраний тип принтера
+			string selectedType = TypePrinter.SelectedItem.ToString();
+
+			// Перевіряємо, чи вибраний тип - Laser
+			if (selectedType == "Laser")
+			{
+				// Показуємо поле LaserType
+				LaserType.Visible = true;
+				LaserTypeT.Visible = true;
+				InkjectType.Visible = false;
+				InkjectTypeT.Visible = false;
+			}
+			if (selectedType == "Inkject")
+			{
+				InkjectType.Visible = true;
+				InkjectTypeT.Visible = true;
+				LaserType.Visible = false;
+				LaserTypeT.Visible = false;
+
+			}
+		}
+
+
 		public Printer GetPrinterData()
 		{
-			// Отримуємо дані про принтер з полів форми
-			string model = txtModel.Text;
-			string manufacturer = txtManufacturer.Text;
-			// Отримуємо і перетворюємо ціну
+			string model = EnterName.Text;
+			string manufacturer = Manufacturer.Text;
 			decimal price;
-			decimal.TryParse(txtPrice.Text, out price);
-			// Отримуємо і перетворюємо розмір принтера
-			int printerSize;
-			int.TryParse(txtPrinterSize.Text, out printerSize);
-			// Отримуємо призначення принтера з комбобокса
-			PrinterPurpose purpose = (PrinterPurpose)comboBoxPurpose.SelectedItem;
+			decimal.TryParse(Price.Text, out price);
+			MaxPrinterSize printerSize;
+			if (!Enum.TryParse(PrinterSize.SelectedItem.ToString(), out printerSize))
+			{
+				MessageBox.Show("Please select a valid purpose.");
+				return null;
+			}
+			PrinterPurpose purpose;
+			if (!Enum.TryParse(Purpose.SelectedItem.ToString(), out purpose))
+			{
+				MessageBox.Show("Please select a valid purpose.");
+				return null;
+			}
+
+			if (TypePrinter.SelectedItem.ToString() == "Laser")
+			{
+				
+					string selectedLaserType = LaserType.SelectedItem.ToString();
+					LaserPrinterType laserPrinterType;
+					if (!Enum.TryParse(selectedLaserType, out laserPrinterType))
+					{
+						MessageBox.Show("Please select a valid laser printer type.");
+						return null;
+					}
+					return new LaserPrinter
+					{
+						Model = model,
+						Manufacturer = manufacturer,
+						Price = price,
+						PrinterSize = printerSize,
+						Purpose = purpose,
+						LaserType = laserPrinterType
+					};
+				
+			}
+
+			if (TypePrinter.SelectedItem.ToString() == "Inkject")
+			{
+			
+				bool duplex = false;
+				if (InkjectType.SelectedItem.ToString() == "Yes")
+				{
+					duplex = true;
+				}
+
+			
+				return new InkjetPrinter
+				{
+					Model = model,
+					Manufacturer = manufacturer,
+					Price = price,
+					PrinterSize = printerSize,
+					Purpose = purpose,
+					Duplex = duplex
+				};
+			}
+
 
 			// Повертаємо новий об'єкт принтера
 			return new Printer
@@ -45,46 +119,37 @@ namespace FlexPrint_WinForm
 			};
 		}
 
-		// Обробник події для кнопки "Додати"
-		private void btnAdd_Click(object sender, EventArgs e)
+		private void AddPrinter_Click(object sender, EventArgs e)
 		{
-			// Перевіряємо, чи всі поля заповнені
-			if (string.IsNullOrWhiteSpace(txtModel.Text) ||
-				string.IsNullOrWhiteSpace(txtManufacturer.Text) ||
-				string.IsNullOrWhiteSpace(txtPrice.Text) ||
-				string.IsNullOrWhiteSpace(txtPrinterSize.Text))
+			
+			if (string.IsNullOrWhiteSpace(EnterName.Text) ||
+				string.IsNullOrWhiteSpace(Manufacturer.Text) ||
+				string.IsNullOrWhiteSpace(Price.Text) ||
+				string.IsNullOrWhiteSpace(PrinterSize.Text))
 			{
 				MessageBox.Show("Please fill in all fields.");
 				return;
 			}
-
-			// Перевіряємо, чи введена правильна ціна
-			decimal price;
-			if (!decimal.TryParse(txtPrice.Text, out price))
+			
+			if (!decimal.TryParse(Price.Text, out decimal price))
 			{
 				MessageBox.Show("Please enter a valid price.");
 				return;
 			}
-
-			// Перевіряємо, чи введено правильний розмір принтера
-			int printerSize;
-			if (!int.TryParse(txtPrinterSize.Text, out printerSize))
+			
+			if (!Enum.TryParse(PrinterSize.SelectedItem.ToString(), out MaxPrinterSize printerSize))
 			{
-				MessageBox.Show("Please enter a valid printer size.");
+				MessageBox.Show("Please select a valid printer size.");
 				return;
 			}
 
-			// Закриваємо форму з результатом DialogResult.OK
+		
 			DialogResult = DialogResult.OK;
-			Close();
 		}
 
-		// Обробник події для кнопки "Відмінити"
-		private void btnCancel_Click(object sender, EventArgs e)
+		private void Cancel_button_Click(object sender, EventArgs e)
 		{
-			// Закриваємо форму з результатом DialogResult.Cancel
-			DialogResult = DialogResult.Cancel;
-			Close();
+			this.Close();
 		}
 	}
 }

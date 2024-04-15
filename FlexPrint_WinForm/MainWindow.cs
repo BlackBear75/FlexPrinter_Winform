@@ -79,24 +79,26 @@ namespace FlexPrint_WinForm
 
 		private void Add_Click(object sender, EventArgs e)
 		{
-			// Створюємо екземпляр форми для додавання принтера
-			using (var addPrinterForm = new AddPrinterForm())
+			// Створення нової форми для додавання принтера
+			AddPrinterForm addPrinterForm = new AddPrinterForm();
+
+			
+			DialogResult result = addPrinterForm.ShowDialog();
+
+	
+			if (result == DialogResult.OK)
 			{
-				// Показуємо діалогове вікно та отримуємо результат
-				DialogResult result = addPrinterForm.ShowDialog();
+				
+				Printer printer = addPrinterForm.GetPrinterData();
 
-				// Перевіряємо результат
-				if (result == DialogResult.OK)
-				{
-					// Отримуємо дані про принтер з форми
-					var newPrinterData = addPrinterForm.GetPrinterData();
+				// Додавання принтера до списку або бази даних
+				// Наприклад:
+				// printers.Add(printer); // додати до списку
+				// SavePrinterToDatabase(printer); // зберегти у базі даних
 
-					// Додаємо новий принтер до бази даних і списку
-					printerManager.AddPrinter(newPrinterData);
-
-					// Оновлюємо DataGridView
-					LoadDataIntoDataGridView();
-				}
+				// Оновлення списку у головному вікні (якщо потрібно)
+				// Наприклад:
+				// UpdatePrintersList();
 			}
 		}
 	}
