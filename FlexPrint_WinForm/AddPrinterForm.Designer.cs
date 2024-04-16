@@ -44,8 +44,8 @@
 			PrinterSizeT = new TextBox();
 			LaserTypeT = new TextBox();
 			LaserType = new ComboBox();
-			InkjectTypeT = new TextBox();
-			InkjectType = new ComboBox();
+			DuplexT = new TextBox();
+			Duplex = new ComboBox();
 			SuspendLayout();
 			// 
 			// Cancel_button
@@ -152,6 +152,7 @@
 			// 
 			// Purpose
 			// 
+			Purpose.DropDownStyle = ComboBoxStyle.DropDownList;
 			Purpose.FormattingEnabled = true;
 			Purpose.Items.AddRange(new object[] { "Home", "Office", "Other" });
 			Purpose.Location = new Point(204, 187);
@@ -161,6 +162,7 @@
 			// 
 			// PrinterSize
 			// 
+			PrinterSize.DropDownStyle = ComboBoxStyle.DropDownList;
 			PrinterSize.FormattingEnabled = true;
 			PrinterSize.Items.AddRange(new object[] { "A4", "A5" });
 			PrinterSize.Location = new Point(204, 231);
@@ -200,26 +202,27 @@
 			LaserType.TabIndex = 15;
 			LaserType.Visible = false;
 			// 
-			// InkjectTypeT
+			// DuplexT
 			// 
-			InkjectTypeT.BackColor = SystemColors.ActiveCaption;
-			InkjectTypeT.BorderStyle = BorderStyle.None;
-			InkjectTypeT.Location = new Point(105, 275);
-			InkjectTypeT.Name = "InkjectTypeT";
-			InkjectTypeT.Size = new Size(93, 20);
-			InkjectTypeT.TabIndex = 16;
-			InkjectTypeT.Text = "InkjectType";
-			InkjectTypeT.Visible = false;
+			DuplexT.BackColor = SystemColors.ActiveCaption;
+			DuplexT.BorderStyle = BorderStyle.None;
+			DuplexT.Location = new Point(138, 270);
+			DuplexT.Name = "DuplexT";
+			DuplexT.Size = new Size(60, 20);
+			DuplexT.TabIndex = 16;
+			DuplexT.Text = "Duplex";
+			DuplexT.Visible = false;
 			// 
-			// InkjectType
+			// Duplex
 			// 
-			InkjectType.FormattingEnabled = true;
-			InkjectType.Items.AddRange(new object[] { "Yes", "No" });
-			InkjectType.Location = new Point(204, 267);
-			InkjectType.Name = "InkjectType";
-			InkjectType.Size = new Size(151, 28);
-			InkjectType.TabIndex = 17;
-			InkjectType.Visible = false;
+			Duplex.DropDownStyle = ComboBoxStyle.DropDownList;
+			Duplex.FormattingEnabled = true;
+			Duplex.Items.AddRange(new object[] { "Yes", "No" });
+			Duplex.Location = new Point(204, 267);
+			Duplex.Name = "Duplex";
+			Duplex.Size = new Size(151, 28);
+			Duplex.TabIndex = 17;
+			Duplex.Visible = false;
 			// 
 			// AddPrinterForm
 			// 
@@ -227,8 +230,8 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ActiveCaption;
 			ClientSize = new Size(506, 391);
-			Controls.Add(InkjectType);
-			Controls.Add(InkjectTypeT);
+			Controls.Add(Duplex);
+			Controls.Add(DuplexT);
 			Controls.Add(LaserType);
 			Controls.Add(LaserTypeT);
 			Controls.Add(PrinterSizeT);
@@ -269,7 +272,7 @@
 		private TextBox PrinterSizeT;
 		private TextBox LaserTypeT;
 		private ComboBox LaserType;
-		private TextBox InkjectTypeT;
-		private ComboBox InkjectType;
+		private TextBox DuplexT;
+		private ComboBox Duplex;
 	}
 }

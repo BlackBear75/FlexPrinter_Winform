@@ -91,10 +91,8 @@ namespace FlexPrint_WinForm
 				
 				Printer printer = addPrinterForm.GetPrinterData();
 
-				// Додавання принтера до списку або бази даних
-				// Наприклад:
-				// printers.Add(printer); // додати до списку
-				// SavePrinterToDatabase(printer); // зберегти у базі даних
+				printerManager.AddPrinter(printer);
+				
 
 				// Оновлення списку у головному вікні (якщо потрібно)
 				// Наприклад:

@@ -31,13 +31,13 @@ namespace FlexPrint_WinForm
 				// Показуємо поле LaserType
 				LaserType.Visible = true;
 				LaserTypeT.Visible = true;
-				InkjectType.Visible = false;
-				InkjectTypeT.Visible = false;
+				Duplex.Visible = false;
+				DuplexT.Visible = false;
 			}
 			if (selectedType == "Inkject")
 			{
-				InkjectType.Visible = true;
-				InkjectTypeT.Visible = true;
+				Duplex.Visible = true;
+				DuplexT.Visible = true;
 				LaserType.Visible = false;
 				LaserTypeT.Visible = false;
 
@@ -49,53 +49,46 @@ namespace FlexPrint_WinForm
 		{
 			string model = EnterName.Text;
 			string manufacturer = Manufacturer.Text;
-			decimal price;
+		
+			decimal price ;
 			decimal.TryParse(Price.Text, out price);
+		
+
 			MaxPrinterSize printerSize;
-			if (!Enum.TryParse(PrinterSize.SelectedItem.ToString(), out printerSize))
-			{
-				MessageBox.Show("Please select a valid purpose.");
-				return null;
-			}
+			Enum.TryParse(PrinterSize.SelectedItem.ToString(), out printerSize);
+			
 			PrinterPurpose purpose;
-			if (!Enum.TryParse(Purpose.SelectedItem.ToString(), out purpose))
-			{
-				MessageBox.Show("Please select a valid purpose.");
-				return null;
-			}
+			Enum.TryParse(Purpose.SelectedItem.ToString(), out purpose);
+			
 
 			if (TypePrinter.SelectedItem.ToString() == "Laser")
 			{
+				string selectedLaserType = LaserType.SelectedItem.ToString();
+
+				LaserPrinterType laserPrinterType;
+				Enum.TryParse(selectedLaserType, out laserPrinterType);
 				
-					string selectedLaserType = LaserType.SelectedItem.ToString();
-					LaserPrinterType laserPrinterType;
-					if (!Enum.TryParse(selectedLaserType, out laserPrinterType))
-					{
-						MessageBox.Show("Please select a valid laser printer type.");
-						return null;
-					}
-					return new LaserPrinter
-					{
-						Model = model,
-						Manufacturer = manufacturer,
-						Price = price,
-						PrinterSize = printerSize,
-						Purpose = purpose,
-						LaserType = laserPrinterType
-					};
-				
+
+				return new LaserPrinter
+				{
+					Model = model,
+					Manufacturer = manufacturer,
+					Price = price,
+					PrinterSize = printerSize,
+					Purpose = purpose,
+					LaserType = laserPrinterType
+				};
 			}
 
 			if (TypePrinter.SelectedItem.ToString() == "Inkject")
 			{
-			
 				bool duplex = false;
-				if (InkjectType.SelectedItem.ToString() == "Yes")
+
+			
+				if (Duplex.SelectedItem != null && Duplex.SelectedItem.ToString() == "Yes")
 				{
 					duplex = true;
 				}
-
-			
 				return new InkjetPrinter
 				{
 					Model = model,
@@ -107,8 +100,7 @@ namespace FlexPrint_WinForm
 				};
 			}
 
-
-			// Повертаємо новий об'єкт принтера
+			//Це в нас заглушка для майбутнього можливо будемо ще додавати принтери різних типів
 			return new Printer
 			{
 				Model = model,
@@ -137,13 +129,41 @@ namespace FlexPrint_WinForm
 				return;
 			}
 			
-			if (!Enum.TryParse(PrinterSize.SelectedItem.ToString(), out MaxPrinterSize printerSize))
+			if(PrinterSize.SelectedItem == null)
 			{
 				MessageBox.Show("Please select a valid printer size.");
 				return;
 			}
+			if (TypePrinter.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a printer type.");
+				return;
+			}
+			if (Purpose.SelectedItem==null)
+			{
+				MessageBox.Show("Please select a valid purpose.");
+				return;
+			}
 
-		
+			if (TypePrinter.SelectedItem.ToString() == "Inkject")
+			{
+				
+				if (Duplex.SelectedItem == null)
+				{
+					MessageBox.Show("Please select a duplex");
+					return;
+				}
+			}
+			if (TypePrinter.SelectedItem.ToString() == "Laser")
+			{
+
+				if (LaserType.SelectedItem == null)
+				{
+					MessageBox.Show("Please select a LaserType");
+					return;
+				}
+			}
+
 			DialogResult = DialogResult.OK;
 		}
 

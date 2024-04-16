@@ -25,7 +25,7 @@ namespace FlexPrint_WinForm
 
 
 			ApplicationConfiguration.Initialize();
-			Application.Run(new MainWindow(configuration));
+			 Application.Run(new MainWindow(configuration));
 		}
 	}
 }
