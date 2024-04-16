@@ -410,10 +410,14 @@ namespace FlexPrint_WinForm
 
 		private void FromTheEndB_Click(object sender, EventArgs e)
 		{
-			printerManager.LoadDataFromDatabase();
-			LinkedList<Printer> printers = printerManager.GetPrinters();
-
-			// Розвернути порядок принтерів
+			
+			LinkedList<Printer> printers = GetPrintersFromDataGridView();
+			if(printers.Count==0)
+			{
+				MessageBox.Show("The current list is empty, try loading data or creating");
+				return;
+			}
+	
 			printers = ReverseLinkedList(printers);
 
 			PrintforView(printers);
@@ -423,7 +427,7 @@ namespace FlexPrint_WinForm
 		{
 			LinkedList<Printer> reversedList = new LinkedList<Printer>();
 
-			// Ітеруємось по вихідному списку та додаємо елементи у зворотньому порядку
+			
 			foreach (var item in list)
 			{
 				reversedList.AddFirst(item);
