@@ -268,7 +268,7 @@ namespace FlexPrint_WinForm
 						}
 						break;
 
-					case "BuyButtonColumn":
+					case "buyButtonColumn":
 					
 						DataGridViewRow rowforbuy = dataGridView1.Rows[e.RowIndex];
 
@@ -293,39 +293,6 @@ namespace FlexPrint_WinForm
 			}
 		}
 
-
-		private void DataGridView1Buy_CellContentClick(object sender, DataGridViewCellEventArgs e)
-		{
-			// Перевіряємо, чи натискання було на стовпчик кнопки "Buy"
-			if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-			{
-				DataGridViewColumn column = dataGridView1.Columns[e.ColumnIndex];
-				if (column is DataGridViewButtonColumn && column.HeaderText == "Edit")
-				{
-					// Отримуємо рядок, на якому було натискання
-					DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-
-					// Отримуємо об'єкт, збережений у властивості Tag цього рядка
-					object printerObject = row.Tag;
-
-					// Перевіряємо, чи об'єкт не є пустим та чи є він екземпляром класу LaserPrinter
-					if (printerObject != null && printerObject is LaserPrinter)
-					{
-						LaserPrinter laserPrinter = (LaserPrinter)printerObject;
-						// Викликаємо метод для лазерного принтера
-						laserPrinter.CalculatePurchaseCost();
-					}
-					// Перевіряємо, чи об'єкт не є пустим та чи є він екземпляром класу InkjectPrinter
-					else if (printerObject != null && printerObject is InkjetPrinter)
-					{
-						InkjetPrinter inkjectPrinter = (InkjetPrinter)printerObject;
-						// Викликаємо метод для струменевого принтера
-						inkjectPrinter.CalculatePurchaseCost();
-					}
-				}
-			}
-
-		}
 
 		private LinkedList<Printer> GetPrintersFromDataGridView()
 		{

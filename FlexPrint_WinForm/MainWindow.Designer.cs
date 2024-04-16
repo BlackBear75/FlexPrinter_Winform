@@ -29,6 +29,16 @@
 		private void InitializeComponent()
 		{
 			dataGridView1 = new DataGridView();
+			ProductCode = new DataGridViewTextBoxColumn();
+			Model = new DataGridViewTextBoxColumn();
+			Manufacturer = new DataGridViewTextBoxColumn();
+			Price = new DataGridViewTextBoxColumn();
+			PrinterSize = new DataGridViewTextBoxColumn();
+			Purpose = new DataGridViewTextBoxColumn();
+			LaserType = new DataGridViewTextBoxColumn();
+			Duplex = new DataGridViewTextBoxColumn();
+			editButtonColumn = new DataGridViewButtonColumn();
+			buyButtonColumn = new DataGridViewButtonColumn();
 			Remove = new Button();
 			Add = new Button();
 			SortingMethod = new ComboBox();
@@ -39,23 +49,13 @@
 			Sort_by = new Button();
 			GetPrinter = new Button();
 			InfoButton = new Button();
-			ProductCode = new DataGridViewTextBoxColumn();
-			Model = new DataGridViewTextBoxColumn();
-			Manufacturer = new DataGridViewTextBoxColumn();
-			Price = new DataGridViewTextBoxColumn();
-			PrinterSize = new DataGridViewTextBoxColumn();
-			Purpose = new DataGridViewTextBoxColumn();
-			LaserType = new DataGridViewTextBoxColumn();
-			Duplex = new DataGridViewTextBoxColumn();
-			editButtonColumn = new DataGridViewButtonColumn();
-		    buyButtonColumn = new DataGridViewButtonColumn();
 			((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
 			SuspendLayout();
 			// 
 			// dataGridView1
 			// 
 			dataGridView1.AllowUserToAddRows = false;
-			dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+			dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 			dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -64,11 +64,73 @@
 			dataGridView1.Name = "dataGridView1";
 			dataGridView1.RowHeadersWidth = 70;
 			dataGridView1.RowTemplate.Height = 40;
-			dataGridView1.Size = new Size(1030, 274);
+			dataGridView1.Size = new Size(1045, 274);
 			dataGridView1.TabIndex = 0;
 			dataGridView1.CellContentClick += DataGridView1_CellContentClick;
-		
-		
+			// 
+			// ProductCode
+			// 
+			ProductCode.HeaderText = "ProductCode";
+			ProductCode.MinimumWidth = 6;
+			ProductCode.Name = "ProductCode";
+			// 
+			// Model
+			// 
+			Model.HeaderText = "Model";
+			Model.MinimumWidth = 6;
+			Model.Name = "Model";
+			// 
+			// Manufacturer
+			// 
+			Manufacturer.HeaderText = "Manufacturer";
+			Manufacturer.MinimumWidth = 6;
+			Manufacturer.Name = "Manufacturer";
+			// 
+			// Price
+			// 
+			Price.HeaderText = "Price";
+			Price.MinimumWidth = 6;
+			Price.Name = "Price";
+			// 
+			// PrinterSize
+			// 
+			PrinterSize.HeaderText = "PrinterSize";
+			PrinterSize.MinimumWidth = 6;
+			PrinterSize.Name = "PrinterSize";
+			// 
+			// Purpose
+			// 
+			Purpose.HeaderText = "Purpose";
+			Purpose.MinimumWidth = 6;
+			Purpose.Name = "Purpose";
+			// 
+			// LaserType
+			// 
+			LaserType.HeaderText = "LaserType";
+			LaserType.MinimumWidth = 6;
+			LaserType.Name = "LaserType";
+			// 
+			// Duplex
+			// 
+			Duplex.HeaderText = "Duplex";
+			Duplex.MinimumWidth = 6;
+			Duplex.Name = "Duplex";
+			// 
+			// editButtonColumn
+			// 
+			editButtonColumn.HeaderText = "Edit";
+			editButtonColumn.MinimumWidth = 6;
+			editButtonColumn.Name = "editButtonColumn";
+			editButtonColumn.Text = "Edit";
+			editButtonColumn.UseColumnTextForButtonValue = true;
+			// 
+			// buyButtonColumn
+			// 
+			buyButtonColumn.HeaderText = "Buy";
+			buyButtonColumn.MinimumWidth = 6;
+			buyButtonColumn.Name = "buyButtonColumn";
+			buyButtonColumn.Text = "Buy";
+			buyButtonColumn.UseColumnTextForButtonValue = true;
 			// 
 			// Remove
 			// 
@@ -166,70 +228,6 @@
 			InfoButton.Text = "Info";
 			InfoButton.UseVisualStyleBackColor = true;
 			InfoButton.Click += InfoButton_Click;
-			// 
-			// ProductCode
-			// 
-			ProductCode.HeaderText = "ProductCode";
-			ProductCode.MinimumWidth = 6;
-			ProductCode.Name = "ProductCode";
-			// 
-			// Model
-			// 
-			Model.HeaderText = "Model";
-			Model.MinimumWidth = 6;
-			Model.Name = "Model";
-			// 
-			// Manufacturer
-			// 
-			Manufacturer.HeaderText = "Manufacturer";
-			Manufacturer.MinimumWidth = 6;
-			Manufacturer.Name = "Manufacturer";
-			// 
-			// Price
-			// 
-			Price.HeaderText = "Price";
-			Price.MinimumWidth = 6;
-			Price.Name = "Price";
-			// 
-			// PrinterSize
-			// 
-			PrinterSize.HeaderText = "PrinterSize";
-			PrinterSize.MinimumWidth = 6;
-			PrinterSize.Name = "PrinterSize";
-			// 
-			// Purpose
-			// 
-			Purpose.HeaderText = "Purpose";
-			Purpose.MinimumWidth = 6;
-			Purpose.Name = "Purpose";
-			// 
-			// LaserType
-			// 
-			LaserType.HeaderText = "LaserType";
-			LaserType.MinimumWidth = 6;
-			LaserType.Name = "LaserType";
-			// 
-			// Duplex
-			// 
-			Duplex.HeaderText = "Duplex";
-			Duplex.MinimumWidth = 6;
-			Duplex.Name = "Duplex";
-			// 
-			// editButtonColumn
-			// 
-			editButtonColumn.HeaderText = "Edit";
-			editButtonColumn.MinimumWidth = 6;
-			editButtonColumn.Name = "editButtonColumn";
-			editButtonColumn.Text = "Edit";
-			editButtonColumn.UseColumnTextForButtonValue = true;
-			// 
-			// buyButtonColumn
-			// 
-			buyButtonColumn.HeaderText = "Buy";
-			buyButtonColumn.MinimumWidth = 6;
-			buyButtonColumn.Name = "BuyButtonColumn";
-			buyButtonColumn.Text = "Buy";
-			buyButtonColumn.UseColumnTextForButtonValue = true;
 			// 
 			// MainWindow
 			// 
