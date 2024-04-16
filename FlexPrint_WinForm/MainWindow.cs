@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,47 +28,29 @@ namespace FlexPrint_WinForm
 
 		private void Load_Data_Click(object sender, EventArgs e)
 		{
-			// Отримання списку принтерів з допомогою вашого PrinterManager
+
 			LinkedList<Printer> printers = printerManager.GetPrinters();
+			PrintforView(printers);
 
-			// Очищення даних у DataGridView
-			dataGridView1.Rows.Clear();
-
-			// Додавання даних у DataGridView
-			foreach (var printer in printers)
-			{
-				if (printer is LaserPrinter)
-				{
-					dataGridView1.Rows.Add(printer.ProductCode, printer.Model, printer.Manufacturer, printer.Price, printer.PrinterSize, printer.Purpose, ((LaserPrinter)(object)printer).LaserType);
-				}
-				if (printer is InkjetPrinter)
-				{
-					dataGridView1.Rows.Add(printer.ProductCode, printer.Model, printer.Manufacturer, printer.Price, printer.PrinterSize, printer.Purpose, ((InkjetPrinter)(object)printer).Duplex);
-				}
-			}
 		}
 
 		private void Remove_Click(object sender, EventArgs e)
 		{
-			// Перевіряємо, чи вибрано який-небудь рядок у DataGridView
+
 			if (dataGridView1.SelectedRows.Count > 0)
 			{
-				// Отримуємо обраний рядок
-				DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
-				// Виводимо підтвердження видалення за допомогою MessageBox
+				DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 				DialogResult result = MessageBox.Show("Ви впевнені, що хочете видалити цей запис?", "Підтвердження видалення", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-				// Перевіряємо результат підтвердження
+
 				if (result == DialogResult.Yes)
 				{
-					// Отримуємо код продукту з обраного рядка (передбачається, що перший стовпчик містить код продукту)
+
 					string productCode = selectedRow.Cells[0].Value.ToString();
 
-					// Видаляємо принтер зі списку із відповідним кодом продукту
 					printerManager.RemovePrinter(productCode);
 
-					// Видаляємо обраний рядок з DataGridView
 					dataGridView1.Rows.Remove(selectedRow);
 				}
 			}
@@ -79,25 +62,75 @@ namespace FlexPrint_WinForm
 
 		private void Add_Click(object sender, EventArgs e)
 		{
-			// Створення нової форми для додавання принтера
+
 			AddPrinterForm addPrinterForm = new AddPrinterForm();
 
-			
 			DialogResult result = addPrinterForm.ShowDialog();
 
-	
+
 			if (result == DialogResult.OK)
 			{
-				
+
 				Printer printer = addPrinterForm.GetPrinterData();
 
 				printerManager.AddPrinter(printer);
-				
 
-				// Оновлення списку у головному вікні (якщо потрібно)
-				// Наприклад:
-				// UpdatePrintersList();
+
+				LinkedList<Printer> printers = printerManager.GetPrinters();
+				PrintforView(printers);
+
 			}
 		}
+
+		private void Sort_by_Click(object sender, EventArgs e)
+		{
+			string selectedMethod;
+			if (SortingMethod.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a valid sorting method.");
+				return;
+			}
+			else
+			{
+				selectedMethod = SortingMethod.SelectedItem.ToString();
+			}
+
+
+			switch (selectedMethod)
+			{
+				case "Price":
+
+					LinkedList<Printer> sortedPrinters = printerManager.SortPrintersByPrice();
+					PrintforView(sortedPrinters);
+					break;
+
+				default:
+					MessageBox.Show("Please select a valid sorting method.");
+					break;
+			}
+
+		}
+		private void GetPrinter_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		public void PrintforView(LinkedList<Printer> sortedPrinters)
+		{
+			dataGridView1.Rows.Clear();
+			foreach (var printer in sortedPrinters)
+			{
+				if (printer is LaserPrinter)
+				{
+					dataGridView1.Rows.Add(printer.ProductCode, printer.Model, printer.Manufacturer, printer.Price, printer.PrinterSize, printer.Purpose, ((LaserPrinter)printer).LaserType, null);
+				}
+				else if (printer is InkjetPrinter)
+				{
+					dataGridView1.Rows.Add(printer.ProductCode, printer.Model, printer.Manufacturer, printer.Price, printer.PrinterSize, printer.Purpose, null, ((InkjetPrinter)printer).Duplex);
+				}
+			}
+		}
+
+		
 	}
 }

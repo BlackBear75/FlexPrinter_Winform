@@ -39,13 +39,13 @@
 			dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
 			Remove = new Button();
 			Add = new Button();
-			comboBox1 = new ComboBox();
+			SortingMethod = new ComboBox();
 			comboBox2 = new ComboBox();
 			textBox1 = new TextBox();
 			button3 = new Button();
 			Load_Data = new Button();
-			button5 = new Button();
-			button6 = new Button();
+			Sort_by = new Button();
+			GetPrinter = new Button();
 			((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
 			SuspendLayout();
 			// 
@@ -61,7 +61,7 @@
 			dataGridView1.Name = "dataGridView1";
 			dataGridView1.RowHeadersWidth = 70;
 			dataGridView1.RowTemplate.Height = 40;
-			dataGridView1.Size = new Size(1030, 57);
+			dataGridView1.Size = new Size(1030, 274);
 			dataGridView1.TabIndex = 0;
 			// 
 			// dataGridViewTextBoxColumn1
@@ -132,15 +132,15 @@
 			Add.UseVisualStyleBackColor = true;
 			Add.Click += Add_Click;
 			// 
-			// comboBox1
+			// SortingMethod
 			// 
-			comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-			comboBox1.FormattingEnabled = true;
-			comboBox1.Items.AddRange(new object[] { "Price" });
-			comboBox1.Location = new Point(355, 66);
-			comboBox1.Name = "comboBox1";
-			comboBox1.Size = new Size(151, 28);
-			comboBox1.TabIndex = 3;
+			SortingMethod.DropDownStyle = ComboBoxStyle.DropDownList;
+			SortingMethod.FormattingEnabled = true;
+			SortingMethod.Items.AddRange(new object[] { "Price" });
+			SortingMethod.Location = new Point(355, 66);
+			SortingMethod.Name = "SortingMethod";
+			SortingMethod.Size = new Size(151, 28);
+			SortingMethod.TabIndex = 3;
 			// 
 			// comboBox2
 			// 
@@ -178,23 +178,25 @@
 			Load_Data.UseVisualStyleBackColor = true;
 			Load_Data.Click += Load_Data_Click;
 			// 
-			// button5
+			// Sort_by
 			// 
-			button5.Location = new Point(282, 65);
-			button5.Name = "button5";
-			button5.Size = new Size(67, 29);
-			button5.TabIndex = 8;
-			button5.Text = "Sort by";
-			button5.UseVisualStyleBackColor = true;
+			Sort_by.Location = new Point(282, 65);
+			Sort_by.Name = "Sort_by";
+			Sort_by.Size = new Size(67, 29);
+			Sort_by.TabIndex = 8;
+			Sort_by.Text = "Sort by";
+			Sort_by.UseVisualStyleBackColor = true;
+			Sort_by.Click += Sort_by_Click;
 			// 
-			// button6
+			// GetPrinter
 			// 
-			button6.Location = new Point(525, 65);
-			button6.Name = "button6";
-			button6.Size = new Size(47, 29);
-			button6.TabIndex = 9;
-			button6.Text = "Get";
-			button6.UseVisualStyleBackColor = true;
+			GetPrinter.Location = new Point(525, 65);
+			GetPrinter.Name = "GetPrinter";
+			GetPrinter.Size = new Size(47, 29);
+			GetPrinter.TabIndex = 9;
+			GetPrinter.Text = "Get";
+			GetPrinter.UseVisualStyleBackColor = true;
+			GetPrinter.Click += GetPrinter_Click;
 			// 
 			// MainWindow
 			// 
@@ -202,13 +204,13 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ActiveCaption;
 			ClientSize = new Size(1051, 403);
-			Controls.Add(button6);
-			Controls.Add(button5);
+			Controls.Add(GetPrinter);
+			Controls.Add(Sort_by);
 			Controls.Add(Load_Data);
 			Controls.Add(button3);
 			Controls.Add(textBox1);
 			Controls.Add(comboBox2);
-			Controls.Add(comboBox1);
+			Controls.Add(SortingMethod);
 			Controls.Add(Add);
 			Controls.Add(Remove);
 			Controls.Add(dataGridView1);
@@ -224,13 +226,13 @@
 		private DataGridView dataGridView1;
 		private Button Remove;
 		private Button Add;
-		private ComboBox comboBox1;
+		private ComboBox SortingMethod;
 		private ComboBox comboBox2;
 		private TextBox textBox1;
 		private Button button3;
 		private Button Load_Data;
-		private Button button5;
-		private Button button6;
+		private Button Sort_by;
+		private Button GetPrinter;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
