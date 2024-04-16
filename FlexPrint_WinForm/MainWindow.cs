@@ -100,7 +100,10 @@ namespace FlexPrint_WinForm
 			{
 				case "Price":
 
-					LinkedList<Printer> sortedPrinters = printerManager.SortPrintersByPrice();
+					LinkedList<Printer> printers = GetPrintersFromDataGridView();
+					
+					LinkedList<Printer> sortedPrinters = printerManager.SortPrintersByPrice(printers);
+					
 					PrintforView(sortedPrinters);
 					break;
 
@@ -112,6 +115,7 @@ namespace FlexPrint_WinForm
 		}
 		private void GetPrinter_Click(object sender, EventArgs e)
 		{
+			LinkedList<Printer> printers = GetPrintersFromDataGridView();
 			string selectedOption;
 			if (GetPrintersCombobox.SelectedItem == null)
 			{
@@ -126,20 +130,41 @@ namespace FlexPrint_WinForm
 			switch (selectedOption)
 			{
 				case "Office":
-					LinkedList<Printer> officePrinters = printerManager.GetOfficePrinters();
+				
+					LinkedList<Printer> officePrinters = printerManager.GetOfficePrinters(printers);
+					if(officePrinters.Count==0)
+					{
+						MessageBox.Show($"There are no printers in the current list, {selectedOption}");
+						return;
+					}
 					PrintforView(officePrinters);
 
 					break;
 				case "Home":
-					LinkedList<Printer> homePrinters = printerManager.GetHomePrinters();
+					LinkedList<Printer> homePrinters = printerManager.GetHomePrinters(printers);
+					if (homePrinters.Count == 0)
+					{
+						MessageBox.Show($"There are no printers in the current list, {selectedOption}");
+						return;
+					}
 					PrintforView(homePrinters);
 					break;
 				case "Laser Printer":
-					LinkedList<Printer> laserPrinters = printerManager.GetLaserPrinters();
+					LinkedList<Printer> laserPrinters = printerManager.GetLaserPrinters(printers);
+					if (laserPrinters.Count == 0)
+					{
+						MessageBox.Show($"There are no printers in the current list, {selectedOption}");
+						return;
+					}
 					PrintforView(laserPrinters);
 					break;
 				case "Inkject Printer":
-					LinkedList<Printer> inkjetPrinters = printerManager.GetInkjetPrinters();
+					LinkedList<Printer> inkjetPrinters = printerManager.GetInkjetPrinters(printers);
+					if (inkjetPrinters.Count == 0)
+					{
+						MessageBox.Show($"There are no printers in the current list, {selectedOption}");
+						return;
+					}
 					PrintforView(inkjetPrinters);
 					break;
 
@@ -150,7 +175,7 @@ namespace FlexPrint_WinForm
 		}
 		private void Findbutton_Click(object sender, EventArgs e)
 		{
-		
+			LinkedList<Printer> printers = GetPrintersFromDataGridView();
 			string manufacturer = FindTextbox.Text;
 
 			if (string.IsNullOrEmpty(manufacturer))
@@ -159,7 +184,7 @@ namespace FlexPrint_WinForm
 				return;
 			}
 
-			LinkedList<Printer> printersByManufacturer = printerManager.GetPrintersByManufacturer(manufacturer);
+			LinkedList<Printer> printersByManufacturer = printerManager.GetPrintersByManufacturer(manufacturer, printers);
 			if (printersByManufacturer.Count == 0)
 			{
 				MessageBox.Show($"No printers found for manufacturer {manufacturer}.");
@@ -167,10 +192,151 @@ namespace FlexPrint_WinForm
 			}
 			PrintforView(printersByManufacturer);
 
-			
-
 		}
 
+		private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+
+			if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+			{
+				DataGridViewColumn column = dataGridView1.Columns[e.ColumnIndex];
+				if (column is DataGridViewButtonColumn && column.HeaderText == "Edit")
+				{
+					DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+					string productCode = row.Cells["ProductCode"].Value.ToString();
+					string model = row.Cells["Model"].Value.ToString();
+					string manufacturer = row.Cells["Manufacturer"].Value.ToString();
+					decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
+					string printerSizeString = row.Cells["PrinterSize"].Value.ToString();
+					MaxPrinterSize printerSize;
+					Enum.TryParse(printerSizeString, out printerSize);
+					string purposeString = row.Cells["Purpose"].Value.ToString();
+					PrinterPurpose purpose;
+					Enum.TryParse(purposeString, out purpose);
+					string laserType = row.Cells["LaserType"].Value?.ToString();
+					bool? duplex = row.Cells["Duplex"].Value as bool?;
+
+					// Відкриваємо нову форму редагування і передаємо дані рядка
+					EditPrinterForm editForm = new EditPrinterForm(productCode, model, manufacturer, price, printerSize, purpose, laserType, duplex);
+					editForm.ShowDialog();
+
+					// Оновлення даних у випадку, якщо вони були змінені
+					if (editForm.DialogResult == DialogResult.OK)
+					{
+						// Отримуємо відредаговані дані з форми редагування
+						string editedModel = editForm.Model;
+						string editedManufacturer = editForm.Manufacturer;
+						decimal editedPrice = editForm.Price;
+						MaxPrinterSize editedPrinterSize = editForm.PrinterSize;
+						PrinterPurpose editedPurpose = editForm.Purpose;
+						string editedLaserType = editForm.LaserType;
+						bool? editedDuplex = editForm.Duplex;
+
+						// Виконуємо оновлення даних у вашому джерелі даних або списку
+
+						// Наприклад, оновіть значення у відповідному рядку вашого DataGridView
+						row.Cells["Model"].Value = editedModel;
+						row.Cells["Manufacturer"].Value = editedManufacturer;
+						row.Cells["Price"].Value = editedPrice;
+						row.Cells["PrinterSize"].Value = editedPrinterSize;
+						row.Cells["Purpose"].Value = editedPurpose;
+						row.Cells["LaserType"].Value = editedLaserType;
+						row.Cells["Duplex"].Value = editedDuplex;
+					}
+				}
+			}
+		}
+
+		private LinkedList<Printer> GetPrintersFromDataGridView()
+		{
+			LinkedList<Printer> printers = new LinkedList<Printer>();
+
+			foreach (DataGridViewRow row in dataGridView1.Rows)
+			{
+				string productcode = row.Cells["ProductCode"].Value.ToString();
+				string model = row.Cells["Model"].Value.ToString();
+				string manufacturer = row.Cells["Manufacturer"].Value.ToString();
+				decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
+
+				string printerSizeString = row.Cells["PrinterSize"].Value.ToString();
+				MaxPrinterSize printerSize;
+				if (!Enum.TryParse(printerSizeString, out printerSize))
+				{
+					MessageBox.Show("Invalid value for PrinterSize.");
+					return null;
+				}
+				
+				string purposeString = row.Cells["Purpose"].Value.ToString();
+				PrinterPurpose purpose;
+				if (!Enum.TryParse(purposeString, out purpose))
+				{
+					MessageBox.Show("Invalid value for Purpose.");
+					return null;
+				}
+				if (row.Cells["LaserType"].Value != null)
+				{
+					string laserType = row.Cells["LaserType"].Value.ToString();
+					LaserPrinterType laserPrinterType;
+
+					// Перевіряємо, чи вдалося перетворити значення в перерахування
+					if (!Enum.TryParse(laserType, out laserPrinterType))
+					{
+						MessageBox.Show("Invalid value for LaserType.");
+						return null;
+					}
+
+					// Створюємо об'єкт типу LaserPrinter
+					LaserPrinter laserPrinter = new LaserPrinter
+					{
+						ProductCode = productcode,
+						Model = model,
+						Manufacturer = manufacturer,
+						Price = price,
+						PrinterSize = printerSize,
+						Purpose = purpose,
+						LaserType = laserPrinterType
+					};
+
+					// Додаємо принтер до списку
+					printers.AddLast(laserPrinter);
+				}
+			
+				else if (row.Cells["Duplex"].Value != null)
+				{
+					string duplexValue = row.Cells["Duplex"].Value.ToString();
+					bool duplex;
+
+					// Перевіряємо, чи вдалося перетворити значення в логічний тип
+					if (!bool.TryParse(duplexValue, out duplex))
+					{
+						MessageBox.Show("Invalid value for Duplex.");
+						return null;
+					}
+
+					// Створюємо об'єкт типу InkjetPrinter
+					InkjetPrinter inkjetPrinter = new InkjetPrinter
+					{
+						ProductCode= productcode,
+						Model = model,
+						Manufacturer = manufacturer,
+						Price = price,
+						PrinterSize = printerSize,
+						Purpose = purpose,
+						Duplex = duplex
+					};
+
+					// Додаємо принтер до списку
+					printers.AddLast(inkjetPrinter);
+				}
+				else
+				{
+					MessageBox.Show("Either LaserType or Duplex must have a value.");
+					return null;
+				}
+			}
+
+			return printers;
+		}
 
 
 		public void PrintforView(LinkedList<Printer> sortedPrinters)

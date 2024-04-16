@@ -35,7 +35,7 @@ namespace FlexPrint_Console.Manager
 		/// <summary>
 		/// Метод для сортування принтерів за ціною в порядку зростання.
 		/// </summary>
-		LinkedList<Printer> SortPrintersByPrice();
+		LinkedList<Printer> SortPrintersByPrice(LinkedList<Printer> allPrinters);
 
 
 		/// <summary>
@@ -49,32 +49,32 @@ namespace FlexPrint_Console.Manager
 		/// Метод для отримання списку лазерних принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список лазерних принтерів.</returns>
-		LinkedList<Printer> GetLaserPrinters();
+		LinkedList<Printer> GetLaserPrinters(LinkedList<Printer> allPrinters);
 
 		/// <summary>
 		/// Метод для отримання списку струменевих принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список струменевих принтерів.</returns>
-		LinkedList<Printer> GetInkjetPrinters();
+		LinkedList<Printer> GetInkjetPrinters(LinkedList<Printer> allPrinters);
 
 		/// <summary>
 		/// Метод для отримання списку принтерів виробника за його назвою.
 		/// </summary>
 		/// <param name="manufacturer">Назва виробника принтерів.</param>
 		/// <returns>Список принтерів виробника.</returns>
-		LinkedList<Printer> GetPrintersByManufacturer(string manufacturer);
+		LinkedList<Printer> GetPrintersByManufacturer(string manufacturer, LinkedList<Printer> allPrinters);
 
 		/// <summary>
 		/// Метод для отримання списку принтерів для дому.
 		/// </summary>
 		/// <returns>Список принтерів для дому.</returns>
-		LinkedList<Printer> GetHomePrinters();
+		LinkedList<Printer> GetHomePrinters(LinkedList<Printer> allPrinters);
 
 		/// <summary>
 		/// Метод для отримання списку принтерів для офісу.
 		/// </summary>
 		/// <returns>Список принтерів для офісу.</returns>
-		LinkedList<Printer> GetOfficePrinters();
+		LinkedList<Printer> GetOfficePrinters(LinkedList<Printer> allPrinters);
 	}
 
 

@@ -153,113 +153,84 @@ namespace FlexPrint_Console.Manager
 			}
 		}
 
-		public LinkedList<Printer> SortPrintersByPrice()
+		public LinkedList<Printer> SortPrintersByPrice(LinkedList<Printer> allPrinters)
 		{
-			var allPrinters = new LinkedList<Printer>();
-
-			foreach (var printer in laserPrintersList)
-			{
-				allPrinters.AddLast(printer);
-			}
-
-			foreach (var printer in inkjetPrintersList)
-			{
-				allPrinters.AddLast(printer);
-			}
-
 			var sortedPrinters = new LinkedList<Printer>(allPrinters.OrderBy(p => p.Price));
-
 			return sortedPrinters;
 		}
 
-		public LinkedList<Printer> GetLaserPrinters()
+		public LinkedList<Printer> GetLaserPrinters(LinkedList<Printer> allPrinters)
 		{
 			var laserPrinters = new LinkedList<Printer>();
 
-			foreach (var printer in laserPrintersList)
+			foreach (var printer in allPrinters)
 			{
-				laserPrinters.AddLast(printer);
+				if (printer is LaserPrinter)
+				{
+					laserPrinters.AddLast(printer);
+				}
 			}
 			return laserPrinters;
 		}
-
-		public LinkedList<Printer> GetInkjetPrinters()
+		public LinkedList<Printer> GetInkjetPrinters(LinkedList<Printer> allPrinters)
 		{
 			var inkjetPrinters = new LinkedList<Printer>();
 
-			foreach (var printer in inkjetPrintersList)
+			foreach (var printer in allPrinters)
 			{
-				inkjetPrinters.AddLast(printer);
+				if (printer is InkjetPrinter)
+				{
+					inkjetPrinters.AddLast(printer);
+				}
 			}
 			return inkjetPrinters;
 		}
 
-		public LinkedList<Printer> GetPrintersByManufacturer(string manufacturer)
+		public LinkedList<Printer> GetPrintersByManufacturer(string manufacturer,LinkedList<Printer> allPrinters)
 		{
 			var printersByManufacturer = new LinkedList<Printer>();
-			foreach (var printer in laserPrintersList)
+
+			foreach (var printer in allPrinters)
 			{
 				if (printer.Manufacturer == manufacturer)
 				{
 					printersByManufacturer.AddLast(printer);
 				}
 			}
-			foreach (var printer in inkjetPrintersList)
-			{
-				if (printer.Manufacturer == manufacturer)
-				{
-					printersByManufacturer.AddLast(printer);
-				}
-			}
-			
+
 			return printersByManufacturer;
 		}
 
-		public LinkedList<Printer> GetHomePrinters()
+		public LinkedList<Printer> GetHomePrinters(LinkedList<Printer> allPrinters)
 		{
 			var homePrinters = new LinkedList<Printer>();
-			foreach (var printer in inkjetPrintersList)
+
+			foreach (var printer in allPrinters)
 			{
 				if (printer.Purpose == PrinterPurpose.Home)
 				{
 					homePrinters.AddLast(printer);
 				}
 			}
-			foreach (var printer in laserPrintersList)
-			{
-				if (printer.Purpose == PrinterPurpose.Home)
-				{
-					homePrinters.AddLast(printer);
-				}
-			}
-			
+
 			return homePrinters;
 		}
 
-		public LinkedList<Printer> GetOfficePrinters()
+		public LinkedList<Printer> GetOfficePrinters(LinkedList<Printer> allPrinters)
 		{
 			var officePrinters = new LinkedList<Printer>();
-			foreach (var printer in inkjetPrintersList)
+
+			foreach (var printer in allPrinters)
 			{
 				if (printer.Purpose == PrinterPurpose.Office)
 				{
 					officePrinters.AddLast(printer);
 				}
 			}
-			foreach (var printer in laserPrintersList)
-			{
-				if (printer.Purpose == PrinterPurpose.Office)
-				{
-					officePrinters.AddLast(printer);
-				}
-			}
-			if (officePrinters.Count == 0)
-			{
-				Console.WriteLine("No office printers found");
-			}
+
 			return officePrinters;
 		}
 
-		
+
 	}
 }

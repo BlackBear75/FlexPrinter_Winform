@@ -63,54 +63,63 @@
 			dataGridView1.RowTemplate.Height = 40;
 			dataGridView1.Size = new Size(1030, 274);
 			dataGridView1.TabIndex = 0;
+		
+			DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+			editButtonColumn.HeaderText = "Edit";
+			editButtonColumn.Text = "Edit";
+			editButtonColumn.UseColumnTextForButtonValue = true;
+			dataGridView1.CellContentClick += DataGridView1_CellContentClick;
+			dataGridView1.Columns.Add(editButtonColumn);
+
+
 			// 
 			// dataGridViewTextBoxColumn1
 			// 
 			dataGridViewTextBoxColumn1.HeaderText = "ProductCode";
 			dataGridViewTextBoxColumn1.MinimumWidth = 6;
-			dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+			dataGridViewTextBoxColumn1.Name = "ProductCode";
 			// 
 			// dataGridViewTextBoxColumn2
 			// 
 			dataGridViewTextBoxColumn2.HeaderText = "Model";
 			dataGridViewTextBoxColumn2.MinimumWidth = 6;
-			dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+			dataGridViewTextBoxColumn2.Name = "Model";
 			// 
 			// dataGridViewTextBoxColumn3
 			// 
 			dataGridViewTextBoxColumn3.HeaderText = "Manufacturer";
 			dataGridViewTextBoxColumn3.MinimumWidth = 6;
-			dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+			dataGridViewTextBoxColumn3.Name = "Manufacturer";
 			// 
 			// dataGridViewTextBoxColumn4
 			// 
 			dataGridViewTextBoxColumn4.HeaderText = "Price";
 			dataGridViewTextBoxColumn4.MinimumWidth = 6;
-			dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+			dataGridViewTextBoxColumn4.Name = "Price";
 			// 
 			// dataGridViewTextBoxColumn5
 			// 
 			dataGridViewTextBoxColumn5.HeaderText = "PrinterSize";
 			dataGridViewTextBoxColumn5.MinimumWidth = 6;
-			dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+			dataGridViewTextBoxColumn5.Name = "PrinterSize";
 			// 
 			// dataGridViewTextBoxColumn6
 			// 
 			dataGridViewTextBoxColumn6.HeaderText = "Purpose";
 			dataGridViewTextBoxColumn6.MinimumWidth = 6;
-			dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+			dataGridViewTextBoxColumn6.Name = "Purpose";
 			// 
 			// dataGridViewTextBoxColumn7
 			// 
 			dataGridViewTextBoxColumn7.HeaderText = "LaserType";
 			dataGridViewTextBoxColumn7.MinimumWidth = 6;
-			dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+			dataGridViewTextBoxColumn7.Name = "LaserType";
 			// 
 			// dataGridViewTextBoxColumn8
 			// 
 			dataGridViewTextBoxColumn8.HeaderText = "Duplex";
 			dataGridViewTextBoxColumn8.MinimumWidth = 6;
-			dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+			dataGridViewTextBoxColumn8.Name = "Duplex";
 			// 
 			// Remove
 			// 
@@ -175,7 +184,7 @@
 			Load_Data.Name = "Load_Data";
 			Load_Data.Size = new Size(113, 41);
 			Load_Data.TabIndex = 7;
-			Load_Data.Text = "Load Data";
+			Load_Data.Text = "All Printers";
 			Load_Data.UseVisualStyleBackColor = true;
 			Load_Data.Click += Load_Data_Click;
 			// 
