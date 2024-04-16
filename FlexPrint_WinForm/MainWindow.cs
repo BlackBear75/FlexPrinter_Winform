@@ -3,16 +3,6 @@ using FlexPrint_Console.Manager;
 using FlexPrint_Console.Model;
 using FlexPrint_WinForm.Model;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FlexPrint_WinForm
 {
@@ -28,7 +18,7 @@ namespace FlexPrint_WinForm
 
 		private void Load_Data_Click(object sender, EventArgs e)
 		{
-
+			printerManager.LoadDataFromDatabase();
 			LinkedList<Printer> printers = printerManager.GetPrinters();
 			PrintforView(printers);
 
@@ -101,9 +91,9 @@ namespace FlexPrint_WinForm
 				case "Price":
 
 					LinkedList<Printer> printers = GetPrintersFromDataGridView();
-					
+
 					LinkedList<Printer> sortedPrinters = printerManager.SortPrintersByPrice(printers);
-					
+
 					PrintforView(sortedPrinters);
 					break;
 
@@ -130,9 +120,9 @@ namespace FlexPrint_WinForm
 			switch (selectedOption)
 			{
 				case "Office":
-				
+
 					LinkedList<Printer> officePrinters = printerManager.GetOfficePrinters(printers);
-					if(officePrinters.Count==0)
+					if (officePrinters.Count == 0)
 					{
 						MessageBox.Show($"There are no printers in the current list, {selectedOption}");
 						return;
@@ -216,32 +206,54 @@ namespace FlexPrint_WinForm
 					string laserType = row.Cells["LaserType"].Value?.ToString();
 					bool? duplex = row.Cells["Duplex"].Value as bool?;
 
-					// Відкриваємо нову форму редагування і передаємо дані рядка
+
 					EditPrinterForm editForm = new EditPrinterForm(productCode, model, manufacturer, price, printerSize, purpose, laserType, duplex);
 					editForm.ShowDialog();
 
-					// Оновлення даних у випадку, якщо вони були змінені
+
 					if (editForm.DialogResult == DialogResult.OK)
 					{
-						// Отримуємо відредаговані дані з форми редагування
-						string editedModel = editForm.Model;
-						string editedManufacturer = editForm.Manufacturer;
-						decimal editedPrice = editForm.Price;
-						MaxPrinterSize editedPrinterSize = editForm.PrinterSize;
-						PrinterPurpose editedPurpose = editForm.Purpose;
-						string editedLaserType = editForm.LaserType;
-						bool? editedDuplex = editForm.Duplex;
+						if (editForm.LaserType == null)
+						{
+							InkjetPrinter inkjetPrinter = new InkjetPrinter()
+							{
+								ProductCode = productCode,
+								Duplex = editForm.Duplex.Value,
+								Manufacturer = editForm.Manufacturer,
+								Model = editForm.Model,
+								Price = editForm.Price,
+								PrinterSize = editForm.PrinterSize,
+								Purpose = editForm.Purpose,
+							};
+							printerManager.EditPrinter(inkjetPrinter.ProductCode, inkjetPrinter);
+						}
+						else if (editForm.Duplex == null)
+						{
+							string editedLaserTypeString = editForm.LaserType;
+							LaserPrinterType editedLaserTypeedit;
+							Enum.TryParse(editedLaserTypeString, out editedLaserTypeedit);
+							LaserPrinter laserPrinter = new LaserPrinter()
+							{
+								ProductCode = productCode,
+								LaserType = editedLaserTypeedit,
+								Manufacturer = editForm.Manufacturer,
+								Model = editForm.Model,
+								Price = editForm.Price,
+								PrinterSize = editForm.PrinterSize,
+								Purpose = editForm.Purpose,
+							};
+							printerManager.EditPrinter(laserPrinter.ProductCode, laserPrinter);
+						}
 
-						// Виконуємо оновлення даних у вашому джерелі даних або списку
 
-						// Наприклад, оновіть значення у відповідному рядку вашого DataGridView
-						row.Cells["Model"].Value = editedModel;
-						row.Cells["Manufacturer"].Value = editedManufacturer;
-						row.Cells["Price"].Value = editedPrice;
-						row.Cells["PrinterSize"].Value = editedPrinterSize;
-						row.Cells["Purpose"].Value = editedPurpose;
-						row.Cells["LaserType"].Value = editedLaserType;
-						row.Cells["Duplex"].Value = editedDuplex;
+
+						row.Cells["Model"].Value = editForm.Model;
+						row.Cells["Manufacturer"].Value = editForm.Manufacturer;
+						row.Cells["Price"].Value = editForm.Price;
+						row.Cells["PrinterSize"].Value = editForm.PrinterSize;
+						row.Cells["Purpose"].Value = editForm.Purpose;
+						row.Cells["LaserType"].Value = editForm.LaserType;
+						row.Cells["Duplex"].Value = editForm.Duplex;
 					}
 				}
 			}
@@ -265,7 +277,7 @@ namespace FlexPrint_WinForm
 					MessageBox.Show("Invalid value for PrinterSize.");
 					return null;
 				}
-				
+
 				string purposeString = row.Cells["Purpose"].Value.ToString();
 				PrinterPurpose purpose;
 				if (!Enum.TryParse(purposeString, out purpose))
@@ -278,14 +290,14 @@ namespace FlexPrint_WinForm
 					string laserType = row.Cells["LaserType"].Value.ToString();
 					LaserPrinterType laserPrinterType;
 
-					// Перевіряємо, чи вдалося перетворити значення в перерахування
+
 					if (!Enum.TryParse(laserType, out laserPrinterType))
 					{
 						MessageBox.Show("Invalid value for LaserType.");
 						return null;
 					}
 
-					// Створюємо об'єкт типу LaserPrinter
+
 					LaserPrinter laserPrinter = new LaserPrinter
 					{
 						ProductCode = productcode,
@@ -297,26 +309,25 @@ namespace FlexPrint_WinForm
 						LaserType = laserPrinterType
 					};
 
-					// Додаємо принтер до списку
+
 					printers.AddLast(laserPrinter);
 				}
-			
+
 				else if (row.Cells["Duplex"].Value != null)
 				{
 					string duplexValue = row.Cells["Duplex"].Value.ToString();
 					bool duplex;
 
-					// Перевіряємо, чи вдалося перетворити значення в логічний тип
+
 					if (!bool.TryParse(duplexValue, out duplex))
 					{
 						MessageBox.Show("Invalid value for Duplex.");
 						return null;
 					}
 
-					// Створюємо об'єкт типу InkjetPrinter
 					InkjetPrinter inkjetPrinter = new InkjetPrinter
 					{
-						ProductCode= productcode,
+						ProductCode = productcode,
 						Model = model,
 						Manufacturer = manufacturer,
 						Price = price,
@@ -355,6 +366,11 @@ namespace FlexPrint_WinForm
 			}
 		}
 
-	
+		private void InfoButton_Click(object sender, EventArgs e)
+		{
+			
+			InfoForm infoForm = new InfoForm();
+			infoForm.ShowDialog();
+		}
 	}
 }

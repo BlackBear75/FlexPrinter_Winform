@@ -13,17 +13,7 @@ namespace FlexPrint_Console.Model
 
 		public override decimal CalculatePurchaseCost()
 		{
-			
-			//Console.WriteLine("Congratulations, you have received a cartridge as a gift!\n" +
-			//	$"{Price}$ due");
 			return base.CalculatePurchaseCost();
 		}
-
-		//public override string ToString()
-		//{
-		//	return $"InkjetPrinter Printer:\n Manufacturer: {Manufacturer}\n Model: " +
-		//		$" {Model}\n Product Code: {ProductCode}\n Price: {Price}\nPurpose:{Purpose}\n " +
-		//		$"PrinterSize: {PrinterSize}\n Duplex: {Duplex}\n";
-		//}
 	}
 }

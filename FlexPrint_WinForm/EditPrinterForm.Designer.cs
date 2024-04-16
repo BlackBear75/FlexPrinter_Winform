@@ -56,6 +56,7 @@
 			EditPrinterB.TabIndex = 0;
 			EditPrinterB.Text = "Edit Printer";
 			EditPrinterB.UseVisualStyleBackColor = true;
+			EditPrinterB.Click += EditPrinterB_Click;
 			// 
 			// CanselB
 			// 
@@ -65,6 +66,7 @@
 			CanselB.TabIndex = 1;
 			CanselB.Text = "Cancel";
 			CanselB.UseVisualStyleBackColor = true;
+			CanselB.Click += CanselB_Click;
 			// 
 			// ProductCodeT
 			// 
@@ -117,17 +119,6 @@
 			LaserTypeT.Text = "LaserType";
 			LaserTypeT.Visible = false;
 			// 
-			// DuplexT
-			// 
-			DuplexT.BackColor = SystemColors.ActiveCaption;
-			DuplexT.BorderStyle = BorderStyle.None;
-			DuplexT.Location = new Point(198, 292);
-			DuplexT.Name = "DuplexT";
-			DuplexT.Size = new Size(61, 20);
-			DuplexT.TabIndex = 17;
-			DuplexT.Text = "Duplex";
-			DuplexT.Visible = false;
-			// 
 			// ManufacturerT
 			// 
 			ManufacturerT.BackColor = SystemColors.ActiveCaption;
@@ -150,9 +141,9 @@
 			// 
 			// ProductCodeView
 			// 
-			ProductCodeView.ReadOnly = true;
 			ProductCodeView.Location = new Point(265, 42);
 			ProductCodeView.Name = "ProductCodeView";
+			ProductCodeView.ReadOnly = true;
 			ProductCodeView.Size = new Size(125, 27);
 			ProductCodeView.TabIndex = 9;
 			// 
@@ -218,7 +209,17 @@
 			DuplexCombobox.Size = new Size(151, 28);
 			DuplexCombobox.TabIndex = 16;
 			DuplexCombobox.Visible = false;
-			
+			// 
+			// DuplexT
+			// 
+			DuplexT.BackColor = SystemColors.ActiveCaption;
+			DuplexT.BorderStyle = BorderStyle.None;
+			DuplexT.Location = new Point(198, 292);
+			DuplexT.Name = "DuplexT";
+			DuplexT.Size = new Size(61, 20);
+			DuplexT.TabIndex = 17;
+			DuplexT.Text = "Duplex";
+			DuplexT.Visible = false;
 			// 
 			// EditPrinterForm
 			// 

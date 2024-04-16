@@ -98,7 +98,7 @@ namespace FlexPrint_Console.Manager
 				{
 					if (newPrinterData is LaserPrinter)
 					{
-						var existingLaserPrinter = laserPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+						var existingLaserPrinter = context.LaserPrinters.FirstOrDefault(p => p.ProductCode == productCode);
 						if (existingLaserPrinter != null)
 						{
 							existingLaserPrinter.Model = newPrinterData.Model;
@@ -106,12 +106,12 @@ namespace FlexPrint_Console.Manager
 							existingLaserPrinter.Price = newPrinterData.Price;
 							existingLaserPrinter.Purpose = newPrinterData.Purpose;
 							existingLaserPrinter.PrinterSize = newPrinterData.PrinterSize;
-							existingLaserPrinter.LaserType = ((LaserPrinter)(object)newPrinterData).LaserType; // Оновлення поля LaserType
+							existingLaserPrinter.LaserType = ((LaserPrinter)(object)newPrinterData).LaserType;
 						}
 					}
 					else if (newPrinterData is InkjetPrinter)
 					{
-						var existingInkjetPrinter = inkjetPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+						var existingInkjetPrinter = context.InkjetPrinters.FirstOrDefault(p => p.ProductCode == productCode);
 						if (existingInkjetPrinter != null)
 						{
 							existingInkjetPrinter.Model = newPrinterData.Model;
@@ -122,7 +122,7 @@ namespace FlexPrint_Console.Manager
 							existingInkjetPrinter.Duplex = ((InkjetPrinter)(object)newPrinterData).Duplex;
 						}
 					}
-					context.SaveChanges();
+					context.SaveChanges(); // Збереження змін у базі даних
 				}
 			}
 			catch (Exception ex)

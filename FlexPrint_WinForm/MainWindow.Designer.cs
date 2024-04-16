@@ -37,6 +37,7 @@
 			dataGridViewTextBoxColumn6 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
+			editButtonColumn = new DataGridViewButtonColumn();
 			Remove = new Button();
 			Add = new Button();
 			SortingMethod = new ComboBox();
@@ -46,6 +47,7 @@
 			Load_Data = new Button();
 			Sort_by = new Button();
 			GetPrinter = new Button();
+			InfoButton = new Button();
 			((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
 			SuspendLayout();
 			// 
@@ -56,70 +58,70 @@
 			dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 			dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridView1.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8 });
+			dataGridView1.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, editButtonColumn });
 			dataGridView1.Location = new Point(3, 117);
 			dataGridView1.Name = "dataGridView1";
 			dataGridView1.RowHeadersWidth = 70;
 			dataGridView1.RowTemplate.Height = 40;
 			dataGridView1.Size = new Size(1030, 274);
 			dataGridView1.TabIndex = 0;
-		
-			DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-			editButtonColumn.HeaderText = "Edit";
-			editButtonColumn.Text = "Edit";
-			editButtonColumn.UseColumnTextForButtonValue = true;
 			dataGridView1.CellContentClick += DataGridView1_CellContentClick;
-			dataGridView1.Columns.Add(editButtonColumn);
-
-
 			// 
 			// dataGridViewTextBoxColumn1
 			// 
 			dataGridViewTextBoxColumn1.HeaderText = "ProductCode";
 			dataGridViewTextBoxColumn1.MinimumWidth = 6;
-			dataGridViewTextBoxColumn1.Name = "ProductCode";
+			dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
 			// 
 			// dataGridViewTextBoxColumn2
 			// 
 			dataGridViewTextBoxColumn2.HeaderText = "Model";
 			dataGridViewTextBoxColumn2.MinimumWidth = 6;
-			dataGridViewTextBoxColumn2.Name = "Model";
+			dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
 			// 
 			// dataGridViewTextBoxColumn3
 			// 
 			dataGridViewTextBoxColumn3.HeaderText = "Manufacturer";
 			dataGridViewTextBoxColumn3.MinimumWidth = 6;
-			dataGridViewTextBoxColumn3.Name = "Manufacturer";
+			dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
 			// 
 			// dataGridViewTextBoxColumn4
 			// 
 			dataGridViewTextBoxColumn4.HeaderText = "Price";
 			dataGridViewTextBoxColumn4.MinimumWidth = 6;
-			dataGridViewTextBoxColumn4.Name = "Price";
+			dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
 			// 
 			// dataGridViewTextBoxColumn5
 			// 
 			dataGridViewTextBoxColumn5.HeaderText = "PrinterSize";
 			dataGridViewTextBoxColumn5.MinimumWidth = 6;
-			dataGridViewTextBoxColumn5.Name = "PrinterSize";
+			dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
 			// 
 			// dataGridViewTextBoxColumn6
 			// 
 			dataGridViewTextBoxColumn6.HeaderText = "Purpose";
 			dataGridViewTextBoxColumn6.MinimumWidth = 6;
-			dataGridViewTextBoxColumn6.Name = "Purpose";
+			dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
 			// 
 			// dataGridViewTextBoxColumn7
 			// 
 			dataGridViewTextBoxColumn7.HeaderText = "LaserType";
 			dataGridViewTextBoxColumn7.MinimumWidth = 6;
-			dataGridViewTextBoxColumn7.Name = "LaserType";
+			dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
 			// 
 			// dataGridViewTextBoxColumn8
 			// 
 			dataGridViewTextBoxColumn8.HeaderText = "Duplex";
 			dataGridViewTextBoxColumn8.MinimumWidth = 6;
-			dataGridViewTextBoxColumn8.Name = "Duplex";
+			dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+			// 
+			// editButtonColumn
+			// 
+			editButtonColumn.HeaderText = "Edit";
+			editButtonColumn.MinimumWidth = 6;
+			editButtonColumn.Name = "editButtonColumn";
+			editButtonColumn.Text = "Edit";
+			editButtonColumn.UseColumnTextForButtonValue = true;
 			// 
 			// Remove
 			// 
@@ -208,12 +210,23 @@
 			GetPrinter.UseVisualStyleBackColor = true;
 			GetPrinter.Click += GetPrinter_Click;
 			// 
+			// InfoButton
+			// 
+			InfoButton.Location = new Point(131, 12);
+			InfoButton.Name = "InfoButton";
+			InfoButton.Size = new Size(115, 41);
+			InfoButton.TabIndex = 10;
+			InfoButton.Text = "Info";
+			InfoButton.UseVisualStyleBackColor = true;
+			InfoButton.Click += InfoButton_Click;
+			// 
 			// MainWindow
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ActiveCaption;
 			ClientSize = new Size(1051, 403);
+			Controls.Add(InfoButton);
 			Controls.Add(GetPrinter);
 			Controls.Add(Sort_by);
 			Controls.Add(Load_Data);
@@ -251,5 +264,7 @@
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+		private DataGridViewButtonColumn editButtonColumn;
+		private Button InfoButton;
 	}
 }
