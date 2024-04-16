@@ -49,13 +49,13 @@ namespace FlexPrint_Console.Manager
 		/// Метод для отримання списку лазерних принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список лазерних принтерів.</returns>
-		LinkedList<LaserPrinter> GetLaserPrinters();
+		LinkedList<Printer> GetLaserPrinters();
 
 		/// <summary>
 		/// Метод для отримання списку струменевих принтерів з бази даних.
 		/// </summary>
 		/// <returns>Список струменевих принтерів.</returns>
-		LinkedList<InkjetPrinter> GetInkjetPrinters();
+		LinkedList<Printer> GetInkjetPrinters();
 
 		/// <summary>
 		/// Метод для отримання списку принтерів виробника за його назвою.

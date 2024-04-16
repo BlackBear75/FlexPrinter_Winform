@@ -40,9 +40,9 @@
 			Remove = new Button();
 			Add = new Button();
 			SortingMethod = new ComboBox();
-			comboBox2 = new ComboBox();
-			textBox1 = new TextBox();
-			button3 = new Button();
+			GetPrintersCombobox = new ComboBox();
+			FindTextbox = new TextBox();
+			Findbutton = new Button();
 			Load_Data = new Button();
 			Sort_by = new Button();
 			GetPrinter = new Button();
@@ -142,31 +142,32 @@
 			SortingMethod.Size = new Size(151, 28);
 			SortingMethod.TabIndex = 3;
 			// 
-			// comboBox2
+			// GetPrintersCombobox
 			// 
-			comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-			comboBox2.FormattingEnabled = true;
-			comboBox2.Items.AddRange(new object[] { "Office", "Home", "Laser Printer" });
-			comboBox2.Location = new Point(578, 65);
-			comboBox2.Name = "comboBox2";
-			comboBox2.Size = new Size(156, 28);
-			comboBox2.TabIndex = 4;
+			GetPrintersCombobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			GetPrintersCombobox.FormattingEnabled = true;
+			GetPrintersCombobox.Items.AddRange(new object[] { "Office", "Home", "Laser Printer", "Inkject Printer" });
+			GetPrintersCombobox.Location = new Point(578, 65);
+			GetPrintersCombobox.Name = "GetPrintersCombobox";
+			GetPrintersCombobox.Size = new Size(156, 28);
+			GetPrintersCombobox.TabIndex = 4;
 			// 
-			// textBox1
+			// FindTextbox
 			// 
-			textBox1.Location = new Point(805, 67);
-			textBox1.Name = "textBox1";
-			textBox1.Size = new Size(125, 27);
-			textBox1.TabIndex = 5;
+			FindTextbox.Location = new Point(805, 67);
+			FindTextbox.Name = "FindTextbox";
+			FindTextbox.Size = new Size(125, 27);
+			FindTextbox.TabIndex = 5;
 			// 
-			// button3
+			// Findbutton
 			// 
-			button3.Location = new Point(939, 65);
-			button3.Name = "button3";
-			button3.Size = new Size(94, 29);
-			button3.TabIndex = 6;
-			button3.Text = "Find";
-			button3.UseVisualStyleBackColor = true;
+			Findbutton.Location = new Point(939, 65);
+			Findbutton.Name = "Findbutton";
+			Findbutton.Size = new Size(94, 29);
+			Findbutton.TabIndex = 6;
+			Findbutton.Text = "Find";
+			Findbutton.UseVisualStyleBackColor = true;
+			Findbutton.Click += Findbutton_Click;
 			// 
 			// Load_Data
 			// 
@@ -207,9 +208,9 @@
 			Controls.Add(GetPrinter);
 			Controls.Add(Sort_by);
 			Controls.Add(Load_Data);
-			Controls.Add(button3);
-			Controls.Add(textBox1);
-			Controls.Add(comboBox2);
+			Controls.Add(Findbutton);
+			Controls.Add(FindTextbox);
+			Controls.Add(GetPrintersCombobox);
 			Controls.Add(SortingMethod);
 			Controls.Add(Add);
 			Controls.Add(Remove);
@@ -227,9 +228,9 @@
 		private Button Remove;
 		private Button Add;
 		private ComboBox SortingMethod;
-		private ComboBox comboBox2;
-		private TextBox textBox1;
-		private Button button3;
+		private ComboBox GetPrintersCombobox;
+		private TextBox FindTextbox;
+		private Button Findbutton;
 		private Button Load_Data;
 		private Button Sort_by;
 		private Button GetPrinter;

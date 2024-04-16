@@ -172,14 +172,26 @@ namespace FlexPrint_Console.Manager
 			return sortedPrinters;
 		}
 
-		public LinkedList<LaserPrinter> GetLaserPrinters()
+		public LinkedList<Printer> GetLaserPrinters()
 		{
-			return laserPrintersList;
+			var laserPrinters = new LinkedList<Printer>();
+
+			foreach (var printer in laserPrintersList)
+			{
+				laserPrinters.AddLast(printer);
+			}
+			return laserPrinters;
 		}
 
-		public LinkedList<InkjetPrinter> GetInkjetPrinters()
+		public LinkedList<Printer> GetInkjetPrinters()
 		{
-			return inkjetPrintersList;
+			var inkjetPrinters = new LinkedList<Printer>();
+
+			foreach (var printer in inkjetPrintersList)
+			{
+				inkjetPrinters.AddLast(printer);
+			}
+			return inkjetPrinters;
 		}
 
 		public LinkedList<Printer> GetPrintersByManufacturer(string manufacturer)

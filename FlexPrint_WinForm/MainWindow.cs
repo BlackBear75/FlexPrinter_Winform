@@ -112,8 +112,66 @@ namespace FlexPrint_WinForm
 		}
 		private void GetPrinter_Click(object sender, EventArgs e)
 		{
+			string selectedOption;
+			if (GetPrintersCombobox.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a GetPtinter method.");
+				return;
+			}
+			else
+			{
+				selectedOption = GetPrintersCombobox.SelectedItem.ToString();
+			}
+
+			switch (selectedOption)
+			{
+				case "Office":
+					LinkedList<Printer> officePrinters = printerManager.GetOfficePrinters();
+					PrintforView(officePrinters);
+
+					break;
+				case "Home":
+					LinkedList<Printer> homePrinters = printerManager.GetHomePrinters();
+					PrintforView(homePrinters);
+					break;
+				case "Laser Printer":
+					LinkedList<Printer> laserPrinters = printerManager.GetLaserPrinters();
+					PrintforView(laserPrinters);
+					break;
+				case "Inkject Printer":
+					LinkedList<Printer> inkjetPrinters = printerManager.GetInkjetPrinters();
+					PrintforView(inkjetPrinters);
+					break;
+
+				default:
+
+					break;
+			}
+		}
+		private void Findbutton_Click(object sender, EventArgs e)
+		{
+		
+			string manufacturer = FindTextbox.Text;
+
+			if (string.IsNullOrEmpty(manufacturer))
+			{
+				MessageBox.Show("Please enter a manufacturer name.");
+				return;
+			}
+
+			LinkedList<Printer> printersByManufacturer = printerManager.GetPrintersByManufacturer(manufacturer);
+			if (printersByManufacturer.Count == 0)
+			{
+				MessageBox.Show($"No printers found for manufacturer {manufacturer}.");
+				return;
+			}
+			PrintforView(printersByManufacturer);
+
+			
 
 		}
+
+
 
 		public void PrintforView(LinkedList<Printer> sortedPrinters)
 		{
@@ -131,6 +189,6 @@ namespace FlexPrint_WinForm
 			}
 		}
 
-		
+	
 	}
 }
