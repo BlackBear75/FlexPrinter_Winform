@@ -13,6 +13,7 @@ namespace FlexPrint_Console.Model
 
 		public override decimal CalculatePurchaseCost()
 		{
+			MessageBox.Show("Congratulations, you get a free cartridge with the purchase of an inkjet printer");
 			return base.CalculatePurchaseCost();
 		}
 	}

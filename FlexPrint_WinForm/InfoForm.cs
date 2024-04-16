@@ -17,31 +17,45 @@ namespace FlexPrint_WinForm
 			InitializeComponent();
 			Load += new System.EventHandler(this.InfoForm_Load);
 			Resize += new System.EventHandler(this.InfoForm_Resize);
+			MinimumSize = new Size(600, 300);
 		}
 		private void InfoForm_Load(object sender, EventArgs e)
 		{
 			HeaderInfo.Text = "FlexPrint";
-			paragraphinfo1.Text = "Welcome";
-			Indotextbox.Text = "faf";
+	
+
+			Indotextbox.Text = "Good afternoon,below are brief instructions on how to interact with the program\nFunctionality:\r\nAdding printers: Users can add new records about printers, specifying the model, manufacturer, price, size, purpose, type of laser and availability of two-sided printing (duplex).\r\nView Printers: Users can view the list of available printers in the form of a table, which displays the main characteristics of each printer.\nEditing Printers: Users can edit existing printer records by changing any parameters such as model, manufacturer, price, etc.\r\nDelete Printers: Users can delete printer entries that are no longer needed.\r\nSort: You can sort printers by price\r\nSearch for printers: you can search for printers by their type, whether they belong to physical or home printers, you can also find a printer of a specific manufacturer\r\nPurchases and bonuses: Certain discounts or bonuses are available for the purchase of a printer\r\n\r\nUser interface:\r\nThe program has an intuitive and easy-to-use interface. On the main user window there is a list of printers in the form of a table with the possibility of editing and deleting entries. The buttons allow you to add new entries and open the user manual.";
 		}
 		private void InfoForm_Resize(object sender, EventArgs e)
 		{
-			int verticalSpacing = 10;
-			int horizontalMargin = 20;
-			int currentY = HeaderInfo.Bottom + verticalSpacing;
+			int headerX = (this.ClientSize.Width - HeaderInfo.GetPreferredSize(Size.Empty).Width) / 2;
+			HeaderInfo.Location = new Point(headerX, 10);
 
-			// Параграф
-			int paragraphX = horizontalMargin;
-			paragraphinfo1.Location = new Point(paragraphX, currentY);
+			// Визначення положення і розміру для параграфу
+			int paragraphX = (this.ClientSize.Width - HeaderInfo.GetPreferredSize(Size.Empty).Width) / 2;
+			int paragraphY = HeaderInfo.Bottom + 40;
+		
 
-			// Оновлюємо координати для наступного елемента
-			currentY += paragraphinfo1.Height + verticalSpacing;
-
-			// TextBox
-			int textboxX = horizontalMargin;
-			Indotextbox.Location = new Point(textboxX, currentY);
+			int textBoxY = HeaderInfo.Bottom + 30;
+			Indotextbox.Location = new Point(10, textBoxY);
 		}
 
-		
+		private void ChangeFontsize_Click(object sender, EventArgs e)
+		{
+			if (int.TryParse(fontsizeCombobox.SelectedItem?.ToString(), out int newSize))
+			{
+				Indotextbox.Font = new Font(Indotextbox.Font.FontFamily, newSize);
+			
+
+				HeaderInfo.Font = new Font(HeaderInfo.Font.FontFamily, newSize);
+
+			
+				SizeF newSizeHeader = TextRenderer.MeasureText(HeaderInfo.Text, HeaderInfo.Font);
+
+				
+				HeaderInfo.Size = new Size((int)newSizeHeader.Width, (int)newSizeHeader.Height);
+			}
+
+		}
 	}
 }

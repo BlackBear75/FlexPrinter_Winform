@@ -231,6 +231,21 @@ namespace FlexPrint_Console.Manager
 			return officePrinters;
 		}
 
+		public Printer GetPrinterByProductCode(string productCode)
+		{
+			var laserPrinter = laserPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+			if (laserPrinter != null)
+			{
+				return laserPrinter;
+			}
 
+			var inkjetPrinter = inkjetPrintersList.FirstOrDefault(p => p.ProductCode == productCode);
+			if (inkjetPrinter != null)
+			{
+				return inkjetPrinter;
+			}
+
+			return null;
+		}
 	}
 }

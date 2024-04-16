@@ -75,6 +75,11 @@ namespace FlexPrint_Console.Manager
 		/// </summary>
 		/// <returns>Список принтерів для офісу.</returns>
 		LinkedList<Printer> GetOfficePrinters(LinkedList<Printer> allPrinters);
+		/// <summary>
+		/// Метод для отримання принтера за його кодом.
+		/// </summary>
+		/// <returns>Принтер з відповідним кодом</returns>
+		Printer GetPrinterByProductCode(string productCode);
 	}
 
 

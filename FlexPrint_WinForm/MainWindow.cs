@@ -2,6 +2,7 @@
 using FlexPrint_Console.Manager;
 using FlexPrint_Console.Model;
 using FlexPrint_WinForm.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace FlexPrint_WinForm
@@ -186,77 +187,144 @@ namespace FlexPrint_WinForm
 
 		private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
+			if (dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+			{
+				// Отримуємо ім'я стовпчика кнопки
+				string buttonColumnName = dataGridView1.Columns[e.ColumnIndex].Name;
 
+				// Виконуємо дії відповідно до ім'я стовпчика кнопки
+				switch (buttonColumnName)
+				{
+					case "editButtonColumn":
+						if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+						{
+							DataGridViewColumn column = dataGridView1.Columns[e.ColumnIndex];
+							if (column is DataGridViewButtonColumn && column.HeaderText == "Edit")
+							{
+								DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+								string productCode = row.Cells["ProductCode"].Value.ToString();
+								string model = row.Cells["Model"].Value.ToString();
+								string manufacturer = row.Cells["Manufacturer"].Value.ToString();
+								decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
+								string printerSizeString = row.Cells["PrinterSize"].Value.ToString();
+								MaxPrinterSize printerSize;
+								Enum.TryParse(printerSizeString, out printerSize);
+								string purposeString = row.Cells["Purpose"].Value.ToString();
+								PrinterPurpose purpose;
+								Enum.TryParse(purposeString, out purpose);
+								string laserType = row.Cells["LaserType"].Value?.ToString();
+								bool? duplex = row.Cells["Duplex"].Value as bool?;
+
+
+								EditPrinterForm editForm = new EditPrinterForm(productCode, model, manufacturer, price, printerSize, purpose, laserType, duplex);
+								editForm.ShowDialog();
+
+
+								if (editForm.DialogResult == DialogResult.OK)
+								{
+									if (editForm.LaserType == null)
+									{
+										InkjetPrinter inkjetPrinter = new InkjetPrinter()
+										{
+											ProductCode = productCode,
+											Duplex = editForm.Duplex.Value,
+											Manufacturer = editForm.Manufacturer,
+											Model = editForm.Model,
+											Price = editForm.Price,
+											PrinterSize = editForm.PrinterSize,
+											Purpose = editForm.Purpose,
+										};
+										printerManager.EditPrinter(inkjetPrinter.ProductCode, inkjetPrinter);
+									}
+									else if (editForm.Duplex == null)
+									{
+										string editedLaserTypeString = editForm.LaserType;
+										LaserPrinterType editedLaserTypeedit;
+										Enum.TryParse(editedLaserTypeString, out editedLaserTypeedit);
+										LaserPrinter laserPrinter = new LaserPrinter()
+										{
+											ProductCode = productCode,
+											LaserType = editedLaserTypeedit,
+											Manufacturer = editForm.Manufacturer,
+											Model = editForm.Model,
+											Price = editForm.Price,
+											PrinterSize = editForm.PrinterSize,
+											Purpose = editForm.Purpose,
+										};
+										printerManager.EditPrinter(laserPrinter.ProductCode, laserPrinter);
+									}
+
+
+
+									row.Cells["Model"].Value = editForm.Model;
+									row.Cells["Manufacturer"].Value = editForm.Manufacturer;
+									row.Cells["Price"].Value = editForm.Price;
+									row.Cells["PrinterSize"].Value = editForm.PrinterSize;
+									row.Cells["Purpose"].Value = editForm.Purpose;
+									row.Cells["LaserType"].Value = editForm.LaserType;
+									row.Cells["Duplex"].Value = editForm.Duplex;
+								}
+							}
+						}
+						break;
+
+					case "BuyButtonColumn":
+					
+						DataGridViewRow rowforbuy = dataGridView1.Rows[e.RowIndex];
+
+						
+						string productCodeforbuy = rowforbuy.Cells["ProductCode"].Value.ToString();
+
+						
+						var printer = printerManager.GetPrinterByProductCode(productCodeforbuy);
+
+					
+						if (printer is LaserPrinter)
+						{
+						
+							((LaserPrinter)printer).CalculatePurchaseCost();
+						}
+						else if (printer is InkjetPrinter)
+						{	
+							((InkjetPrinter)printer).CalculatePurchaseCost();
+						}
+						break;
+				}
+			}
+		}
+
+
+		private void DataGridView1Buy_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+			// Перевіряємо, чи натискання було на стовпчик кнопки "Buy"
 			if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
 			{
 				DataGridViewColumn column = dataGridView1.Columns[e.ColumnIndex];
 				if (column is DataGridViewButtonColumn && column.HeaderText == "Edit")
 				{
+					// Отримуємо рядок, на якому було натискання
 					DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-					string productCode = row.Cells["ProductCode"].Value.ToString();
-					string model = row.Cells["Model"].Value.ToString();
-					string manufacturer = row.Cells["Manufacturer"].Value.ToString();
-					decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
-					string printerSizeString = row.Cells["PrinterSize"].Value.ToString();
-					MaxPrinterSize printerSize;
-					Enum.TryParse(printerSizeString, out printerSize);
-					string purposeString = row.Cells["Purpose"].Value.ToString();
-					PrinterPurpose purpose;
-					Enum.TryParse(purposeString, out purpose);
-					string laserType = row.Cells["LaserType"].Value?.ToString();
-					bool? duplex = row.Cells["Duplex"].Value as bool?;
 
+					// Отримуємо об'єкт, збережений у властивості Tag цього рядка
+					object printerObject = row.Tag;
 
-					EditPrinterForm editForm = new EditPrinterForm(productCode, model, manufacturer, price, printerSize, purpose, laserType, duplex);
-					editForm.ShowDialog();
-
-
-					if (editForm.DialogResult == DialogResult.OK)
+					// Перевіряємо, чи об'єкт не є пустим та чи є він екземпляром класу LaserPrinter
+					if (printerObject != null && printerObject is LaserPrinter)
 					{
-						if (editForm.LaserType == null)
-						{
-							InkjetPrinter inkjetPrinter = new InkjetPrinter()
-							{
-								ProductCode = productCode,
-								Duplex = editForm.Duplex.Value,
-								Manufacturer = editForm.Manufacturer,
-								Model = editForm.Model,
-								Price = editForm.Price,
-								PrinterSize = editForm.PrinterSize,
-								Purpose = editForm.Purpose,
-							};
-							printerManager.EditPrinter(inkjetPrinter.ProductCode, inkjetPrinter);
-						}
-						else if (editForm.Duplex == null)
-						{
-							string editedLaserTypeString = editForm.LaserType;
-							LaserPrinterType editedLaserTypeedit;
-							Enum.TryParse(editedLaserTypeString, out editedLaserTypeedit);
-							LaserPrinter laserPrinter = new LaserPrinter()
-							{
-								ProductCode = productCode,
-								LaserType = editedLaserTypeedit,
-								Manufacturer = editForm.Manufacturer,
-								Model = editForm.Model,
-								Price = editForm.Price,
-								PrinterSize = editForm.PrinterSize,
-								Purpose = editForm.Purpose,
-							};
-							printerManager.EditPrinter(laserPrinter.ProductCode, laserPrinter);
-						}
-
-
-
-						row.Cells["Model"].Value = editForm.Model;
-						row.Cells["Manufacturer"].Value = editForm.Manufacturer;
-						row.Cells["Price"].Value = editForm.Price;
-						row.Cells["PrinterSize"].Value = editForm.PrinterSize;
-						row.Cells["Purpose"].Value = editForm.Purpose;
-						row.Cells["LaserType"].Value = editForm.LaserType;
-						row.Cells["Duplex"].Value = editForm.Duplex;
+						LaserPrinter laserPrinter = (LaserPrinter)printerObject;
+						// Викликаємо метод для лазерного принтера
+						laserPrinter.CalculatePurchaseCost();
+					}
+					// Перевіряємо, чи об'єкт не є пустим та чи є він екземпляром класу InkjectPrinter
+					else if (printerObject != null && printerObject is InkjetPrinter)
+					{
+						InkjetPrinter inkjectPrinter = (InkjetPrinter)printerObject;
+						// Викликаємо метод для струменевого принтера
+						inkjectPrinter.CalculatePurchaseCost();
 					}
 				}
 			}
+
 		}
 
 		private LinkedList<Printer> GetPrintersFromDataGridView()
