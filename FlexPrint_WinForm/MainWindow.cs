@@ -269,23 +269,23 @@ namespace FlexPrint_WinForm
 						break;
 
 					case "buyButtonColumn":
-					
+
 						DataGridViewRow rowforbuy = dataGridView1.Rows[e.RowIndex];
 
-						
+
 						string productCodeforbuy = rowforbuy.Cells["ProductCode"].Value.ToString();
 
-						
+
 						var printer = printerManager.GetPrinterByProductCode(productCodeforbuy);
 
-					
+
 						if (printer is LaserPrinter)
 						{
-						
+
 							((LaserPrinter)printer).CalculatePurchaseCost();
 						}
 						else if (printer is InkjetPrinter)
-						{	
+						{
 							((InkjetPrinter)printer).CalculatePurchaseCost();
 						}
 						break;
@@ -403,9 +403,33 @@ namespace FlexPrint_WinForm
 
 		private void InfoButton_Click(object sender, EventArgs e)
 		{
-			
+
 			InfoForm infoForm = new InfoForm();
 			infoForm.ShowDialog();
+		}
+
+		private void FromTheEndB_Click(object sender, EventArgs e)
+		{
+			printerManager.LoadDataFromDatabase();
+			LinkedList<Printer> printers = printerManager.GetPrinters();
+
+			// Розвернути порядок принтерів
+			printers = ReverseLinkedList(printers);
+
+			PrintforView(printers);
+		}
+
+		private LinkedList<Printer> ReverseLinkedList(LinkedList<Printer> list)
+		{
+			LinkedList<Printer> reversedList = new LinkedList<Printer>();
+
+			// Ітеруємось по вихідному списку та додаємо елементи у зворотньому порядку
+			foreach (var item in list)
+			{
+				reversedList.AddFirst(item);
+			}
+
+			return reversedList;
 		}
 	}
 }

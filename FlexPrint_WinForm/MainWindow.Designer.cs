@@ -49,6 +49,7 @@
 			Sort_by = new Button();
 			GetPrinter = new Button();
 			InfoButton = new Button();
+			FromTheEndB = new Button();
 			((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
 			SuspendLayout();
 			// 
@@ -229,12 +230,23 @@
 			InfoButton.UseVisualStyleBackColor = true;
 			InfoButton.Click += InfoButton_Click;
 			// 
+			// FromTheEndB
+			// 
+			FromTheEndB.Location = new Point(282, 12);
+			FromTheEndB.Name = "FromTheEndB";
+			FromTheEndB.Size = new Size(118, 29);
+			FromTheEndB.TabIndex = 11;
+			FromTheEndB.Text = "From the end";
+			FromTheEndB.UseVisualStyleBackColor = true;
+			FromTheEndB.Click += FromTheEndB_Click;
+			// 
 			// MainWindow
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ActiveCaption;
 			ClientSize = new Size(1051, 403);
+			Controls.Add(FromTheEndB);
 			Controls.Add(InfoButton);
 			Controls.Add(GetPrinter);
 			Controls.Add(Sort_by);
@@ -276,5 +288,6 @@
 		private DataGridViewTextBoxColumn Duplex;
 		private DataGridViewButtonColumn editButtonColumn;
 		private DataGridViewButtonColumn buyButtonColumn;
+		private Button FromTheEndB;
 	}
 }
