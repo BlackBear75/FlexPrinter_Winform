@@ -21,7 +21,7 @@ namespace FlexPrint_Console.Model
 			{
 
 				discountedPrice *= 0.95m;
-				MessageBox.Show($"Congratulations, your purchase of a laser printer was more than 5000 and you are given a 5% discount and payable : {discountedPrice}$");
+				MessageBox.Show($"Congratulations, your purchase of a laser printer was more than 5000 and you are given a 5% discount and payable : {discountedPrice} UAH");
 
 			}
 			else

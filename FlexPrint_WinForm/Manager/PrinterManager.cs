@@ -96,6 +96,7 @@ namespace FlexPrint_Console.Manager
 			{
 				using (var context = new PrinterDbContext(_configuration))
 				{
+					
 					if (newPrinterData is LaserPrinter)
 					{
 						var existingLaserPrinter = context.LaserPrinters.FirstOrDefault(p => p.ProductCode == productCode);
@@ -122,7 +123,8 @@ namespace FlexPrint_Console.Manager
 							existingInkjetPrinter.Duplex = ((InkjetPrinter)(object)newPrinterData).Duplex;
 						}
 					}
-					context.SaveChanges(); // Збереження змін у базі даних
+					context.SaveChanges(); 
+					LoadDataFromDatabase();
 				}
 			}
 			catch (Exception ex)

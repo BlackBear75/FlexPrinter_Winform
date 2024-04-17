@@ -61,7 +61,8 @@ namespace FlexPrint_WinForm
 			// 
 			fontsizeCombobox.DropDownStyle = ComboBoxStyle.DropDownList;
 			fontsizeCombobox.FormattingEnabled = true;
-			fontsizeCombobox.Items.AddRange(new object[] { "12","16", "20", "32" });
+			fontsizeCombobox.Items.AddRange(new object[] { "9","12","16", "20", "32" });
+			fontsizeCombobox.SelectedIndex = 0;
 			fontsizeCombobox.Location = new Point(12, 12);
 			fontsizeCombobox.Name = "fontsizeCombobox";
 			fontsizeCombobox.Size = new Size(82, 28);

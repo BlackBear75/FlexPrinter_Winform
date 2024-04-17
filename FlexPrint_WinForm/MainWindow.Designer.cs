@@ -61,6 +61,7 @@
 			dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 			dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ProductCode, Model, Manufacturer, Price, PrinterSize, Purpose, LaserType, Duplex, editButtonColumn, buyButtonColumn });
+			
 			dataGridView1.Location = new Point(3, 117);
 			dataGridView1.Name = "dataGridView1";
 			dataGridView1.RowHeadersWidth = 70;
@@ -158,6 +159,7 @@
 			SortingMethod.DropDownStyle = ComboBoxStyle.DropDownList;
 			SortingMethod.FormattingEnabled = true;
 			SortingMethod.Items.AddRange(new object[] { "Price" });
+			SortingMethod.SelectedIndex = 0;
 			SortingMethod.Location = new Point(355, 66);
 			SortingMethod.Name = "SortingMethod";
 			SortingMethod.Size = new Size(151, 28);
@@ -171,6 +173,7 @@
 			GetPrintersCombobox.Location = new Point(578, 65);
 			GetPrintersCombobox.Name = "GetPrintersCombobox";
 			GetPrintersCombobox.Size = new Size(156, 28);
+			GetPrintersCombobox.SelectedIndex = 0;
 			GetPrintersCombobox.TabIndex = 4;
 			// 
 			// FindTextbox

@@ -32,7 +32,7 @@ namespace FlexPrint_WinForm
 			{
 
 				DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-				DialogResult result = MessageBox.Show("Ви впевнені, що хочете видалити цей запис?", "Підтвердження видалення", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				DialogResult result = MessageBox.Show("Are you sure you want to delete this entry?", "Confirm deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 
 				if (result == DialogResult.Yes)
@@ -47,7 +47,7 @@ namespace FlexPrint_WinForm
 			}
 			else
 			{
-				MessageBox.Show("Будь ласка, виберіть рядок для видалення.", "Помилка видалення", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Please select a row to delete.", "Error deleting", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
@@ -293,7 +293,40 @@ namespace FlexPrint_WinForm
 			}
 		}
 
+		private void InfoButton_Click(object sender, EventArgs e)
+		{
 
+			InfoForm infoForm = new InfoForm();
+			infoForm.ShowDialog();
+		}
+
+		private void FromTheEndB_Click(object sender, EventArgs e)
+		{
+			
+			LinkedList<Printer> printers = GetPrintersFromDataGridView();
+			if(printers.Count==0)
+			{
+				MessageBox.Show("The current list is empty, try loading data or creating");
+				return;
+			}
+	
+			printers = ReverseLinkedList(printers);
+
+			PrintforView(printers);
+		}
+
+		private LinkedList<Printer> ReverseLinkedList(LinkedList<Printer> list)
+		{
+			LinkedList<Printer> reversedList = new LinkedList<Printer>();
+
+			
+			foreach (var item in list)
+			{
+				reversedList.AddFirst(item);
+			}
+
+			return reversedList;
+		}
 		private LinkedList<Printer> GetPrintersFromDataGridView()
 		{
 			LinkedList<Printer> printers = new LinkedList<Printer>();
@@ -399,41 +432,6 @@ namespace FlexPrint_WinForm
 					dataGridView1.Rows.Add(printer.ProductCode, printer.Model, printer.Manufacturer, printer.Price, printer.PrinterSize, printer.Purpose, null, ((InkjetPrinter)printer).Duplex);
 				}
 			}
-		}
-
-		private void InfoButton_Click(object sender, EventArgs e)
-		{
-
-			InfoForm infoForm = new InfoForm();
-			infoForm.ShowDialog();
-		}
-
-		private void FromTheEndB_Click(object sender, EventArgs e)
-		{
-			
-			LinkedList<Printer> printers = GetPrintersFromDataGridView();
-			if(printers.Count==0)
-			{
-				MessageBox.Show("The current list is empty, try loading data or creating");
-				return;
-			}
-	
-			printers = ReverseLinkedList(printers);
-
-			PrintforView(printers);
-		}
-
-		private LinkedList<Printer> ReverseLinkedList(LinkedList<Printer> list)
-		{
-			LinkedList<Printer> reversedList = new LinkedList<Printer>();
-
-			
-			foreach (var item in list)
-			{
-				reversedList.AddFirst(item);
-			}
-
-			return reversedList;
 		}
 	}
 }
